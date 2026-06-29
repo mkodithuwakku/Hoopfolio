@@ -17,6 +17,7 @@ export default function HomePage() {
               Dashboard
             </a>
             <a href="#games">Games</a>
+            <a href="#teams">Teams</a>
             <a href="#stocks">Stocks</a>
             <a href="#trending">Trending</a>
             <a href="#buy-low">Buy Low</a>
@@ -87,6 +88,17 @@ export default function HomePage() {
             </div>
             <div id="gameSlate" className="game-slate"></div>
             <div id="gameDetail" className="game-detail"></div>
+          </section>
+
+          <section id="teams" className="tool-surface teams-surface">
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">League player directory</span>
+                <h3>Browse Every Team</h3>
+              </div>
+            </div>
+            <div id="teamDirectory" className="team-directory"></div>
+            <div id="teamRoster" className="team-roster"></div>
           </section>
 
           <section className="dashboard-grid">

@@ -16,6 +16,7 @@ test("current replay fixture is generated from real cached provider data", async
   assert.match(fixture.source.rawCacheDirectory, /^\.cache\/provider-raw\/espn\/nba\//);
   assert.equal(fixture.days.length, 7);
   assert.ok(fixture.players.length >= 150);
+  assert.equal(new Set(fixture.players.map((player) => player.teamAbbreviation)).size, 30);
   assert.ok(fixture.days[0].games.length > 0);
   assert.ok(fixture.days[0].games[0].eventId);
   assert.ok(fixture.days[0].games[0].homeTeam);

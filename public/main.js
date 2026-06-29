@@ -2,6 +2,7 @@ const state = {
   snapshot: null,
   stocks: [],
   selectedGameId: null,
+  selectedTeamAbbreviation: null,
   filters: {
     boostEligible: false,
     buyLowOnly: false
@@ -18,6 +19,8 @@ const elements = {
   activeGames: document.querySelector("#activeGames"),
   gameSlate: document.querySelector("#gameSlate"),
   gameDetail: document.querySelector("#gameDetail"),
+  teamDirectory: document.querySelector("#teamDirectory"),
+  teamRoster: document.querySelector("#teamRoster"),
   advanceDayButton: document.querySelector("#advanceDayButton"),
   resetSimButton: document.querySelector("#resetSimButton"),
   tutorialButton: document.querySelector("#tutorialButton"),
@@ -115,6 +118,8 @@ function bindEvents() {
   elements.marketStories.addEventListener("click", handleStockAction);
   elements.gameSlate?.addEventListener("click", handleGameSelection);
   elements.gameDetail?.addEventListener("click", handleGameDetailAction);
+  elements.teamDirectory?.addEventListener("click", handleTeamSelection);
+  elements.teamRoster?.addEventListener("click", handleGameDetailAction);
   elements.holdingsList.addEventListener("click", handleHoldingAction);
   elements.playerCardClose?.addEventListener("click", closePlayerCard);
   elements.playerCardContent?.addEventListener("click", handleStockAction);
@@ -168,6 +173,7 @@ function applySnapshot(snapshot) {
   elements.topBuyLowCard.innerHTML = renderDashboardPlayerCard(topBuyLow, "Buy-low score");
 
   renderGames(snapshot);
+  renderTeamDirectory(snapshot);
   renderSearch();
   renderMarketStories(snapshot);
   renderSignalList(elements.trendingList, snapshot.trending, "trendingScore");
@@ -396,6 +402,77 @@ function renderGames(snapshot) {
       ${renderGameTeam(selectedGame.awayTeam, selectedGame.awayScore, awayRows)}
       ${renderGameTeam(selectedGame.homeTeam, selectedGame.homeScore, homeRows)}
     </div>
+  `;
+}
+
+function renderTeamDirectory(snapshot) {
+  if (!elements.teamDirectory || !elements.teamRoster) return;
+  const teams = [...snapshot.teams].sort((a, b) => a.abbreviation.localeCompare(b.abbreviation));
+  if (!teams.length) {
+    elements.teamDirectory.innerHTML = `<p class="empty-state">No teams are available in this replay.</p>`;
+    elements.teamRoster.innerHTML = "";
+    return;
+  }
+
+  if (
+    !state.selectedTeamAbbreviation ||
+    !teams.some((team) => team.abbreviation === state.selectedTeamAbbreviation)
+  ) {
+    state.selectedTeamAbbreviation = teams[0].abbreviation;
+  }
+
+  elements.teamDirectory.innerHTML = teams
+    .map((team) => {
+      const count = snapshot.stocks.filter((stock) => stock.teamAbbreviation === team.abbreviation).length;
+      const active = team.abbreviation === state.selectedTeamAbbreviation;
+      return `
+        <button class="team-directory-card ${active ? "active" : ""}" type="button" data-team-abbreviation="${team.abbreviation}" style="--team-color: ${team.neutralColor ?? "#49d6e8"}">
+          ${teamMini({
+            abbreviation: team.abbreviation,
+            color: team.neutralColor,
+            logoUrl: team.logoUrl
+          })}
+          <span>${count} players</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  const selectedTeam = teams.find((team) => team.abbreviation === state.selectedTeamAbbreviation);
+  const roster = snapshot.stocks
+    .filter((stock) => stock.teamAbbreviation === state.selectedTeamAbbreviation)
+    .sort((a, b) => b.projectedFantasyPoints - a.projectedFantasyPoints);
+
+  elements.teamRoster.innerHTML = `
+    <div class="team-roster-header" style="--team-color: ${selectedTeam?.neutralColor ?? "#49d6e8"}">
+      <div>
+        <span class="eyebrow">Available market players</span>
+        <h4>${selectedTeam?.displayName ?? selectedTeam?.name ?? state.selectedTeamAbbreviation}</h4>
+      </div>
+      <strong>${roster.length} buyable stocks</strong>
+    </div>
+    <div class="team-roster-grid">
+      ${roster.map(renderTeamRosterPlayer).join("")}
+    </div>
+  `;
+}
+
+function renderTeamRosterPlayer(stock) {
+  const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
+  const trend = trendDetails(stock);
+  const latestLog = stock.gameLogs.at(-1);
+  return `
+    <article class="team-roster-player">
+      <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
+        ${playerImage(stock, "small")}
+      </button>
+      <div>
+        <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
+        <span class="subtle">${stock.position} · ${latestLog ? `${latestLog.fantasyPoints} FP last log` : `${stock.projectedFantasyPoints} proj FP`}</span>
+      </div>
+      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: "Trend score" })}
+      <button type="button" data-buy="${stock.playerId}" data-default-amount="250" ${disabled}>Buy</button>
+    </article>
   `;
 }
 
@@ -636,6 +713,13 @@ function handleGameSelection(event) {
   if (!gameId) return;
   state.selectedGameId = gameId;
   renderGames(state.snapshot);
+}
+
+function handleTeamSelection(event) {
+  const abbreviation = event.target.closest("[data-team-abbreviation]")?.dataset.teamAbbreviation;
+  if (!abbreviation) return;
+  state.selectedTeamAbbreviation = abbreviation;
+  renderTeamDirectory(state.snapshot);
 }
 
 async function handleHoldingAction(event) {
