@@ -18,6 +18,7 @@ const elements = {
   advanceDayButton: document.querySelector("#advanceDayButton"),
   resetSimButton: document.querySelector("#resetSimButton"),
   tutorialButton: document.querySelector("#tutorialButton"),
+  googleDemoButton: document.querySelector("#googleDemoButton"),
   tutorialOverlay: document.querySelector("#tutorialOverlay"),
   tutorialClose: document.querySelector("#tutorialClose"),
   tutorialCounter: document.querySelector("#tutorialCounter"),
@@ -103,6 +104,7 @@ function bindEvents() {
   elements.buyLowFilter.addEventListener("click", () => toggleFilter("buyLowOnly"));
   elements.advanceDayButton.addEventListener("click", () => mutate("/api/sim/advance-day"));
   elements.resetSimButton.addEventListener("click", () => mutate("/api/sim/reset"));
+  elements.googleDemoButton?.addEventListener("click", createGoogleDemoSession);
   elements.stockRows.addEventListener("click", handleStockAction);
   elements.marketStories.addEventListener("click", handleStockAction);
   elements.holdingsList.addEventListener("click", handleHoldingAction);
@@ -223,7 +225,14 @@ function renderRows(stocks) {
             }
           </td>
           <td class="${stock.currentReturn >= 0 ? "positive" : "negative"}">${formatPercent(stock.currentReturn)}</td>
-          <td>${stock.actualFantasyPoints} / ${stock.projectedFantasyPoints}</td>
+          <td>
+            <strong>${stock.actualFantasyPoints} / ${stock.projectedFantasyPoints}</strong>
+            ${
+              stock.recentAverageFantasyPoints
+                ? `<span class="subtle">${stock.priorWeeksIncluded}wk avg ${stock.recentAverageFantasyPoints} FP</span>`
+                : ""
+            }
+          </td>
           <td>${stock.gamesPlayedThisWeek} / ${stock.gamesRemainingThisWeek}</td>
           <td>${stock.ownershipPercent}%</td>
           <td>
@@ -303,6 +312,7 @@ function renderStoryCard(stock) {
         <div class="story-metrics">
           <span>${formatPercent(stock.currentReturn)} live</span>
           <span>${stock.actualFantasyPoints}/${stock.projectedFantasyPoints} FP</span>
+          ${stock.recentAverageFantasyPoints ? `<span>${stock.priorWeeksIncluded}wk ${stock.recentAverageFantasyPoints} avg</span>` : ""}
           <span>${stock.ownershipPercent}% own</span>
         </div>
         <div class="tag-row">${indicatorChips(stock)}</div>
@@ -442,6 +452,22 @@ async function mutate(path, body) {
   }
 }
 
+async function createGoogleDemoSession() {
+  try {
+    const result = await fetchJson("/api/auth/google-demo", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: "{}"
+    });
+    elements.googleDemoButton.innerHTML = `
+      <span aria-hidden="true">G</span>
+      <strong>${result.user.name}</strong>
+    `;
+  } catch (error) {
+    window.alert(error.message);
+  }
+}
+
 function toggleFilter(key) {
   state.filters[key] = !state.filters[key];
   elements.boostFilter.setAttribute("aria-pressed", String(state.filters.boostEligible));
@@ -508,6 +534,9 @@ function indicatorChips(stock) {
         ? chip("Stable", "chip-stable", "→")
         : null,
     stock.gamesRemainingThisWeek >= 3 ? chip(`${stock.gamesRemainingThisWeek} games`, "chip-schedule", "+") : null,
+    stock.recentAverageFantasyPoints
+      ? chip(`${stock.priorWeeksIncluded}wk avg ${stock.recentAverageFantasyPoints}`, "chip-history", "↺")
+      : null,
     ...stock.reasonTags.slice(0, 2).map((tag) => chip(tag, "chip-neutral", ""))
   ].filter(Boolean);
 

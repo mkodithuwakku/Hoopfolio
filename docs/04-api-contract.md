@@ -1,6 +1,6 @@
 # API Contract Draft
 
-The current prototype exposes read-only local endpoints from `scripts/dev-server.mjs`. Production should expand these into authenticated REST endpoints.
+The current prototype exposes local Next.js route handlers under `app/api`. Production should expand these into authenticated REST endpoints backed by durable persistence.
 
 ## Prototype Endpoints
 
@@ -9,7 +9,11 @@ The current prototype exposes read-only local endpoints from `scripts/dev-server
 | GET | `/api/health` | Returns server and data mode status |
 | GET | `/api/market/snapshot` | Returns current contest, lock status, and calculated stock rows from local cache |
 | GET | `/api/market/search?q=&sort=` | Returns filtered stock rows |
-| GET | `/api/teams` | Returns neutral team metadata |
+| GET | `/api/auth/session` | Returns the current local-file user |
+| POST | `/api/auth/google-demo` | Creates a local demo Google session |
+| GET | `/api/profile` | Returns user, current portfolio, rank, and future historical profile shape |
+| GET | `/api/leaderboards/live` | Returns live replay leaderboard rows |
+| GET | `/api/leaderboards/weekly` | Returns weekly replay leaderboard rows |
 | POST | `/api/trades/buy` | Buys a stock using local test coins |
 | POST | `/api/trades/sell` | Sells a local holding |
 | POST | `/api/sim/advance-day` | Applies the next simulated day of games |

@@ -16,8 +16,10 @@ Tests, local UI development, and deterministic demos must use files under `src/d
 | `src/data/cache/players.json` | Player identity, team, position, status, and local market fields |
 | `src/data/cache/games-week-2026-01.json` | Example weekly schedule and daily lock inputs |
 | `src/data/cache/weekly-market-2026-01.json` | Projections, performance, ownership, trend, buy-low, loyalty, and price inputs |
-| `src/data/cache/sim-week-2024-25.json` | Hand-seeded previous-season-style test simulator fixture |
+| `src/data/cache/sim-week-2024-25.json` | Legacy seed fixture kept for comparison |
+| `src/data/cache/recorded/2024-25/midseason-week-2025-01-06.json` | Current local recorded-cache replay fixture with four prior weeks of context |
 | `.cache/hoopfolio-test-state.json` | Local ignored simulator state: day progress, portfolio, holdings, transactions |
+| `.cache/hoopfolio-app-state.json` | Local ignored app state: users, demo sessions, contests, and future profile snapshots |
 
 ## Provider Policy
 
@@ -25,8 +27,8 @@ The app should access data through provider modules, never directly through a li
 
 Provider order for development:
 
-1. Local cache provider.
-2. Recorded provider responses.
+1. Local recorded provider responses.
+2. Local cache provider.
 3. Manual seed files.
 4. Live free provider only for explicit ingestion tasks.
 
@@ -62,10 +64,10 @@ When live NBA data is introduced:
 
 ## Current Simulator
 
-The first working test application uses `sim-week-2024-25.json`. The file is intentionally local and repeatable. It contains neutral team labels, player names, expected fantasy points, simulated daily fantasy outcomes, trend scores, buy-low scores, loyalty weeks, and bot leaderboard progress.
+The working test application uses `recorded/2024-25/midseason-week-2025-01-06.json`. The file is intentionally local and repeatable. It contains team/player identity, expected fantasy points, daily fantasy outcomes, four prior weekly averages per player, trend scores, buy-low scores, loyalty weeks, and bot leaderboard progress.
 
-Important: this fixture is not represented as official NBA data. It should be treated as hand-seeded product-test data until a recorded provider ingestion flow is added.
+Important: this fixture uses the recorded-cache shape the app needs, but it should still be refreshed from an approved provider dump before public use. The provider ingestion job should save raw source responses first, then write this normalized replay file.
 
 ## Image And Logo Policy
 
-For MVP development, use local generated portraits and neutral custom team badges. Do not fetch official player headshots, NBA logos, team logos, or protected marks during tests or normal local development. If licensed assets are added later, cache them locally with source metadata, license notes, and a repeatable refresh process.
+For this personal prototype, the fixture references NBA CDN headshots and logos with generated fallbacks. For public/commercial release, cache approved assets locally with source metadata, license notes, and a repeatable refresh process.

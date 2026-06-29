@@ -2,7 +2,7 @@
 
 ## Recommendation
 
-Use a TypeScript-first web stack for the production MVP:
+Use a TypeScript-first web stack for the production MVP. The repo now starts that migration with a Next.js app shell and route handlers, while the domain modules remain framework-independent.
 
 | Layer | MVP Recommendation | Reason |
 | --- | --- | --- |
@@ -14,13 +14,25 @@ Use a TypeScript-first web stack for the production MVP:
 | Search | PostgreSQL full-text first | Avoid extra infrastructure until search scale demands it |
 | Data provider | Provider abstraction | Allows local fixtures, nba_api, BALLDONTLIE, or paid providers later |
 
-This repository starts with a dependency-free prototype so the domain rules can be tested locally before framework decisions add weight.
+This repository started with a dependency-free prototype so the domain rules could be tested locally before framework decisions added weight. The current implementation uses Next.js for the app/API boundary and keeps persistence/data providers swappable.
+
+## Current Next.js Development Stack
+
+```mermaid
+flowchart LR
+  Browser["Next.js app shell"] --> RouteHandlers["/api route handlers"]
+  RouteHandlers --> LocalReplay["Recorded cache replay provider"]
+  LocalReplay --> ReplayFixture["src/data/cache/recorded JSON"]
+  RouteHandlers --> FileState[".cache app + simulator state"]
+  RouteHandlers --> Domain["Pricing, trading, search, lock domain modules"]
+  Domain --> Snapshot["Market/profile/leaderboard responses"]
+```
 
 ## Cache-First Development Architecture
 
 ```mermaid
 flowchart LR
-  Browser["Browser dashboard"] --> Server["Node dev server"]
+  Browser["Browser dashboard"] --> Server["Next.js route handlers"]
   Server --> LocalProvider["Local cache provider"]
   LocalProvider --> CacheFiles["src/data/cache JSON"]
   Server --> Pricing["Pricing engine"]
@@ -61,6 +73,7 @@ flowchart TD
 | Settlement engine | Final weekly holdings, realized/unrealized value, leaderboard snapshots |
 | Boost engine | Loyalty eligibility, discount, cap, decay, settlement explanation |
 | Search engine | Filters, sorting, presets, discovery sections |
+| Persistence adapter | Users, sessions, contests, portfolios, holdings, transactions, and leaderboard snapshots |
 
 ## Early Data Model
 

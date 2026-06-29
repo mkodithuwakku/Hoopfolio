@@ -1,0 +1,5 @@
+@import "../public/styles.css";
+
+html {
+  scroll-behavior: smooth;
+}

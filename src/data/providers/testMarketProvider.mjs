@@ -10,7 +10,12 @@ const rootDir = join(providerDir, "..", "..", "..");
 const cacheDir = join(providerDir, "..", "cache");
 const stateDir = join(rootDir, ".cache");
 const statePath = join(stateDir, "hoopfolio-test-state.json");
-const fixturePath = join(cacheDir, "sim-week-2024-25.json");
+const fixturePath = join(
+  cacheDir,
+  "recorded",
+  "2024-25",
+  "midseason-week-2025-01-06.json"
+);
 
 export async function getTestMarketSnapshot() {
   const fixture = await loadFixture();

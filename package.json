@@ -5,10 +5,16 @@
   "type": "module",
   "description": "Free-to-play NBA player stock market prototype with local cache-first data.",
   "scripts": {
-    "start": "node scripts/dev-server.mjs",
+    "start": "next dev -H 127.0.0.1 -p 4173",
+    "legacy:start": "node scripts/dev-server.mjs",
     "test": "node --test tests/*.test.mjs"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "next": "^16.2.9",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7"
   }
 }

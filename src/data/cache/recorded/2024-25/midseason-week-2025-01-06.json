@@ -1,0 +1,851 @@
+{
+  "id": "recorded-2024-25-midseason-week-2025-01-06",
+  "notice": "Recorded-cache replay fixture for a 2024-25 midseason test week. Data is read from disk for development so UI tests make zero live NBA provider calls.",
+  "contest": {
+    "id": "recorded-2024-25-midseason-week-2025-01-06",
+    "name": "2024-25 Midseason Replay Week",
+    "seasonLabel": "2024-25 recorded cache replay",
+    "startingCoins": 10000,
+    "startsAt": "2025-01-06T17:00:00.000Z",
+    "endsAt": "2025-01-13T04:59:59.000Z"
+  },
+  "teams": [
+    {
+      "id": "okc",
+      "nbaTeamId": "1610612760",
+      "name": "Oklahoma City",
+      "abbreviation": "OKC",
+      "neutralColor": "#007ac1",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612760/primary/L/logo.svg"
+    },
+    {
+      "id": "dal",
+      "nbaTeamId": "1610612742",
+      "name": "Dallas",
+      "abbreviation": "DAL",
+      "neutralColor": "#00538c",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612742/primary/L/logo.svg"
+    },
+    {
+      "id": "bos",
+      "nbaTeamId": "1610612738",
+      "name": "Boston",
+      "abbreviation": "BOS",
+      "neutralColor": "#007a33",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612738/primary/L/logo.svg"
+    },
+    {
+      "id": "nyk",
+      "nbaTeamId": "1610612752",
+      "name": "New York",
+      "abbreviation": "NYK",
+      "neutralColor": "#f58426",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612752/primary/L/logo.svg"
+    },
+    {
+      "id": "min",
+      "nbaTeamId": "1610612750",
+      "name": "Minnesota",
+      "abbreviation": "MIN",
+      "neutralColor": "#236192",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612750/primary/L/logo.svg"
+    },
+    {
+      "id": "sas",
+      "nbaTeamId": "1610612759",
+      "name": "San Antonio",
+      "abbreviation": "SAS",
+      "neutralColor": "#c4ced4",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612759/primary/L/logo.svg"
+    },
+    {
+      "id": "den",
+      "nbaTeamId": "1610612743",
+      "name": "Denver",
+      "abbreviation": "DEN",
+      "neutralColor": "#fdb927",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612743/primary/L/logo.svg"
+    },
+    {
+      "id": "mil",
+      "nbaTeamId": "1610612749",
+      "name": "Milwaukee",
+      "abbreviation": "MIL",
+      "neutralColor": "#00471b",
+      "logoUrl": "https://cdn.nba.com/logos/nba/1610612749/primary/L/logo.svg"
+    }
+  ],
+  "days": [
+    {
+      "label": "Monday",
+      "date": "2025-01-06",
+      "marketLocksAt": "2025-01-07T00:00:00.000Z",
+      "games": [
+        "OKC vs DAL",
+        "BOS vs NYK"
+      ]
+    },
+    {
+      "label": "Tuesday",
+      "date": "2025-01-07",
+      "marketLocksAt": "2025-01-08T00:30:00.000Z",
+      "games": [
+        "MIN vs SAS",
+        "DEN vs MIL"
+      ]
+    },
+    {
+      "label": "Wednesday",
+      "date": "2025-01-08",
+      "marketLocksAt": "2025-01-09T00:00:00.000Z",
+      "games": [
+        "NYK vs OKC",
+        "DAL vs BOS"
+      ]
+    },
+    {
+      "label": "Friday",
+      "date": "2025-01-10",
+      "marketLocksAt": "2025-01-11T00:30:00.000Z",
+      "games": [
+        "SAS vs DEN",
+        "MIL vs MIN"
+      ]
+    }
+  ],
+  "players": [
+    {
+      "id": "shai-gilgeous-alexander",
+      "nbaPersonId": "1628983",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628983.png",
+      "name": "Shai Gilgeous-Alexander",
+      "teamId": "okc",
+      "teamName": "Oklahoma City",
+      "teamAbbreviation": "OKC",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 156,
+      "dailyFantasyPoints": [
+        48,
+        0,
+        57,
+        44
+      ],
+      "projectedRemainingFantasyPoints": [
+        47,
+        0,
+        51,
+        43
+      ],
+      "volatilityMultiplier": 0.82,
+      "ownershipPercent": 44,
+      "trendingScore": 82,
+      "buyLowScore": 52,
+      "volatilityRating": 36,
+      "minutesTrend": 2,
+      "usageTrend": 4,
+      "loyaltyWeeks": 3,
+      "reasonTags": [
+        "safe floor",
+        "boost eligible",
+        "high usage"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 43.8,
+          "totalFantasyPoints": 175.2
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 47.2,
+          "totalFantasyPoints": 141.6
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 45.5,
+          "totalFantasyPoints": 182
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 49.1,
+          "totalFantasyPoints": 196.4
+        }
+      ],
+      "recentAverageFantasyPoints": 46.4,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 5.3,
+      "projectionBasis": "4-week local recorded cache, momentum +5.3 FP"
+    },
+    {
+      "id": "luka-doncic",
+      "nbaPersonId": "1629029",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629029.png",
+      "name": "Luka Doncic",
+      "teamId": "dal",
+      "teamName": "Dallas",
+      "teamAbbreviation": "DAL",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 164,
+      "dailyFantasyPoints": [
+        36,
+        0,
+        62,
+        41
+      ],
+      "projectedRemainingFantasyPoints": [
+        50,
+        0,
+        55,
+        45
+      ],
+      "volatilityMultiplier": 0.9,
+      "ownershipPercent": 49,
+      "trendingScore": -24,
+      "buyLowScore": 78,
+      "volatilityRating": 48,
+      "minutesTrend": 0,
+      "usageTrend": 5,
+      "loyaltyWeeks": 1,
+      "reasonTags": [
+        "buy low",
+        "usage up",
+        "high projection"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 50.4,
+          "totalFantasyPoints": 201.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 47.8,
+          "totalFantasyPoints": 143.4
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 44.2,
+          "totalFantasyPoints": 176.8
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 53.6,
+          "totalFantasyPoints": 214.4
+        }
+      ],
+      "recentAverageFantasyPoints": 49,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 9.4,
+      "projectionBasis": "4-week local recorded cache, momentum +3.2 FP"
+    },
+    {
+      "id": "jayson-tatum",
+      "nbaPersonId": "1628369",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628369.png",
+      "name": "Jayson Tatum",
+      "teamId": "bos",
+      "teamName": "Boston",
+      "teamAbbreviation": "BOS",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 145,
+      "dailyFantasyPoints": [
+        41,
+        0,
+        39,
+        47
+      ],
+      "projectedRemainingFantasyPoints": [
+        43,
+        0,
+        42,
+        44
+      ],
+      "volatilityMultiplier": 0.8,
+      "ownershipPercent": 36,
+      "trendingScore": 45,
+      "buyLowScore": 56,
+      "volatilityRating": 33,
+      "minutesTrend": 1,
+      "usageTrend": 1,
+      "loyaltyWeeks": 2,
+      "reasonTags": [
+        "steady minutes",
+        "boost eligible"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 39.6,
+          "totalFantasyPoints": 158.4
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 42.1,
+          "totalFantasyPoints": 126.3
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 40.8,
+          "totalFantasyPoints": 163.2
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 44.3,
+          "totalFantasyPoints": 177.2
+        }
+      ],
+      "recentAverageFantasyPoints": 41.7,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 4.7,
+      "projectionBasis": "4-week local recorded cache, momentum +4.7 FP"
+    },
+    {
+      "id": "jalen-brunson",
+      "nbaPersonId": "1628973",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628973.png",
+      "name": "Jalen Brunson",
+      "teamId": "nyk",
+      "teamName": "New York",
+      "teamAbbreviation": "NYK",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 122,
+      "dailyFantasyPoints": [
+        28,
+        0,
+        44,
+        40
+      ],
+      "projectedRemainingFantasyPoints": [
+        34,
+        0,
+        41,
+        38
+      ],
+      "volatilityMultiplier": 0.92,
+      "ownershipPercent": 27,
+      "trendingScore": -58,
+      "buyLowScore": 86,
+      "volatilityRating": 52,
+      "minutesTrend": 3,
+      "usageTrend": 6,
+      "loyaltyWeeks": 0,
+      "reasonTags": [
+        "buy low",
+        "minutes stable",
+        "usage up"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 33.2,
+          "totalFantasyPoints": 132.8
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 31.7,
+          "totalFantasyPoints": 95.1
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 38.6,
+          "totalFantasyPoints": 154.4
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 41.4,
+          "totalFantasyPoints": 165.6
+        }
+      ],
+      "recentAverageFantasyPoints": 36.2,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 9.7,
+      "projectionBasis": "4-week local recorded cache, momentum +8.2 FP"
+    },
+    {
+      "id": "anthony-edwards",
+      "nbaPersonId": "1630162",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1630162.png",
+      "name": "Anthony Edwards",
+      "teamId": "min",
+      "teamName": "Minnesota",
+      "teamAbbreviation": "MIN",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 136,
+      "dailyFantasyPoints": [
+        0,
+        46,
+        0,
+        55
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        42,
+        0,
+        45
+      ],
+      "volatilityMultiplier": 0.98,
+      "ownershipPercent": 39,
+      "trendingScore": 74,
+      "buyLowScore": 44,
+      "volatilityRating": 63,
+      "minutesTrend": 4,
+      "usageTrend": 4,
+      "loyaltyWeeks": 1,
+      "reasonTags": [
+        "hot hand",
+        "high volatility"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 36.9,
+          "totalFantasyPoints": 147.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 39.4,
+          "totalFantasyPoints": 118.2
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 43.7,
+          "totalFantasyPoints": 174.8
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 45.2,
+          "totalFantasyPoints": 180.8
+        }
+      ],
+      "recentAverageFantasyPoints": 41.3,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 8.3,
+      "projectionBasis": "4-week local recorded cache, momentum +8.3 FP"
+    },
+    {
+      "id": "victor-wembanyama",
+      "nbaPersonId": "1641705",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1641705.png",
+      "name": "Victor Wembanyama",
+      "teamId": "sas",
+      "teamName": "San Antonio",
+      "teamAbbreviation": "SAS",
+      "position": "C",
+      "status": "Probable",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 151,
+      "dailyFantasyPoints": [
+        0,
+        61,
+        0,
+        58
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        49,
+        0,
+        50
+      ],
+      "volatilityMultiplier": 1,
+      "ownershipPercent": 46,
+      "trendingScore": 92,
+      "buyLowScore": 64,
+      "volatilityRating": 72,
+      "minutesTrend": 5,
+      "usageTrend": 3,
+      "loyaltyWeeks": 4,
+      "reasonTags": [
+        "market mover",
+        "boost eligible",
+        "high upside"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 42.4,
+          "totalFantasyPoints": 169.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 48.9,
+          "totalFantasyPoints": 146.7
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 52.8,
+          "totalFantasyPoints": 211.2
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 55.6,
+          "totalFantasyPoints": 222.4
+        }
+      ],
+      "recentAverageFantasyPoints": 49.9,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 13.2,
+      "projectionBasis": "4-week local recorded cache, momentum +13.2 FP"
+    },
+    {
+      "id": "nikola-jokic",
+      "nbaPersonId": "203999",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/203999.png",
+      "name": "Nikola Jokic",
+      "teamId": "den",
+      "teamName": "Denver",
+      "teamAbbreviation": "DEN",
+      "position": "C",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 170,
+      "dailyFantasyPoints": [
+        0,
+        63,
+        0,
+        66
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        55,
+        0,
+        57
+      ],
+      "volatilityMultiplier": 0.76,
+      "ownershipPercent": 54,
+      "trendingScore": 66,
+      "buyLowScore": 48,
+      "volatilityRating": 26,
+      "minutesTrend": 1,
+      "usageTrend": 2,
+      "loyaltyWeeks": 5,
+      "reasonTags": [
+        "premium floor",
+        "boost eligible",
+        "low volatility"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 55.4,
+          "totalFantasyPoints": 221.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 57.8,
+          "totalFantasyPoints": 173.4
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 60.2,
+          "totalFantasyPoints": 240.8
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 58.9,
+          "totalFantasyPoints": 235.6
+        }
+      ],
+      "recentAverageFantasyPoints": 58.1,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 4.8,
+      "projectionBasis": "4-week local recorded cache, momentum +3.5 FP"
+    },
+    {
+      "id": "giannis-antetokounmpo",
+      "nbaPersonId": "203507",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/203507.png",
+      "name": "Giannis Antetokounmpo",
+      "teamId": "mil",
+      "teamName": "Milwaukee",
+      "teamAbbreviation": "MIL",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 158,
+      "dailyFantasyPoints": [
+        0,
+        45,
+        0,
+        62
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        50,
+        0,
+        51
+      ],
+      "volatilityMultiplier": 0.86,
+      "ownershipPercent": 41,
+      "trendingScore": 37,
+      "buyLowScore": 69,
+      "volatilityRating": 40,
+      "minutesTrend": 2,
+      "usageTrend": 2,
+      "loyaltyWeeks": 2,
+      "reasonTags": [
+        "buy low watch",
+        "boost eligible",
+        "strong schedule"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 46.5,
+          "totalFantasyPoints": 186
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 51.3,
+          "totalFantasyPoints": 153.9
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 48.8,
+          "totalFantasyPoints": 195.2
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 54.1,
+          "totalFantasyPoints": 216.4
+        }
+      ],
+      "recentAverageFantasyPoints": 50.2,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 7.6,
+      "projectionBasis": "4-week local recorded cache, momentum +7.6 FP"
+    },
+    {
+      "id": "derrick-white",
+      "nbaPersonId": "1628401",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1628401.png",
+      "name": "Derrick White",
+      "teamId": "bos",
+      "teamName": "Boston",
+      "teamAbbreviation": "BOS",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 86,
+      "dailyFantasyPoints": [
+        34,
+        0,
+        30,
+        28
+      ],
+      "projectedRemainingFantasyPoints": [
+        29,
+        0,
+        28,
+        27
+      ],
+      "volatilityMultiplier": 0.78,
+      "ownershipPercent": 17,
+      "trendingScore": 53,
+      "buyLowScore": 74,
+      "volatilityRating": 30,
+      "minutesTrend": 3,
+      "usageTrend": 1,
+      "loyaltyWeeks": 2,
+      "reasonTags": [
+        "under-owned",
+        "safe floor",
+        "boost eligible"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 27.9,
+          "totalFantasyPoints": 111.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 30.2,
+          "totalFantasyPoints": 90.6
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 28.4,
+          "totalFantasyPoints": 113.6
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 32.1,
+          "totalFantasyPoints": 128.4
+        }
+      ],
+      "recentAverageFantasyPoints": 29.6,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 4.2,
+      "projectionBasis": "4-week local recorded cache, momentum +4.2 FP"
+    },
+    {
+      "id": "naz-reid",
+      "nbaPersonId": "1629675",
+      "headshotUrl": "https://cdn.nba.com/headshots/nba/latest/1040x760/1629675.png",
+      "name": "Naz Reid",
+      "teamId": "min",
+      "teamName": "Minnesota",
+      "teamAbbreviation": "MIN",
+      "position": "F/C",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 55,
+      "dailyFantasyPoints": [
+        0,
+        25,
+        0,
+        38
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        22,
+        0,
+        25
+      ],
+      "volatilityMultiplier": 1.1,
+      "ownershipPercent": 13,
+      "trendingScore": 71,
+      "buyLowScore": 82,
+      "volatilityRating": 74,
+      "minutesTrend": 8,
+      "usageTrend": 4,
+      "loyaltyWeeks": 0,
+      "reasonTags": [
+        "injury opportunity",
+        "under-owned",
+        "buy low"
+      ],
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 4,
+          "averageFantasyPoints": 18.5,
+          "totalFantasyPoints": 74
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 21.2,
+          "totalFantasyPoints": 63.6
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 24.8,
+          "totalFantasyPoints": 99.2
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 29.7,
+          "totalFantasyPoints": 118.8
+        }
+      ],
+      "recentAverageFantasyPoints": 23.6,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 11.2,
+      "projectionBasis": "4-week local recorded cache, momentum +11.2 FP"
+    }
+  ],
+  "leaderboardBots": [
+    {
+      "id": "bot-value",
+      "displayName": "Value Hunter",
+      "dailyValues": [
+        10000,
+        10170,
+        10360,
+        10510,
+        10740
+      ]
+    },
+    {
+      "id": "bot-stars",
+      "displayName": "Stars Only",
+      "dailyValues": [
+        10000,
+        9800,
+        10060,
+        10120,
+        10330
+      ]
+    },
+    {
+      "id": "bot-contrarian",
+      "displayName": "Low Own Lab",
+      "dailyValues": [
+        10000,
+        9920,
+        10420,
+        10280,
+        10910
+      ]
+    },
+    {
+      "id": "bot-tilt",
+      "displayName": "Panic Seller",
+      "dailyValues": [
+        10000,
+        9660,
+        9410,
+        9720,
+        9510
+      ]
+    }
+  ],
+  "source": {
+    "mode": "recorded-cache",
+    "season": "2024-25",
+    "replayWeekStart": "2025-01-06",
+    "replayWeekEnd": "2025-01-12",
+    "priorWeeksIncluded": 4,
+    "liveProviderCalls": false,
+    "sourceNote": "Normalized local replay fixture. Replace or refresh this file from an ingestion job when an approved provider dump is available."
+  }
+}

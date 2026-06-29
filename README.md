@@ -2,18 +2,19 @@
 
 Hoopfolio is a free-to-play NBA player stock market game. Users receive a weekly coin budget, build a portfolio of NBA player stocks, trade only during open market windows, and compete on weekly leaderboards.
 
-This initial implementation is intentionally cache-first. It uses local seed data and local calculation engines so development and tests do not call an NBA data API. Live providers can be added later behind the data provider abstraction.
+This implementation is intentionally cache-first. It uses a local recorded-cache replay fixture and local calculation engines so development and tests do not call an NBA data API. Live providers can be added later behind the data provider abstraction.
 
 ## Current Slice
 
-- Static analytics dashboard served by a small Node server.
-- Clickable test market simulator using local previous-season-style seed data.
+- Next.js app shell with backend route handlers under `/api/*`.
+- Clickable test market simulator using a local 2024-25 midseason recorded-cache replay.
 - Local cached teams, players, games, projections, and weekly market state.
-- Disk-backed portfolio, trades, week advancement, leaderboard, and reset flow.
+- Disk-backed users, sessions, portfolio state, trades, week advancement, leaderboard, and reset flow.
 - Pricing engine based on fantasy performance versus expectations.
 - Loyalty boost calculation with capped purchase discount.
 - Search/filter/sort engine for stock discovery.
 - Server-side market lock helper.
+- Local Google sign-in demo endpoint and button. Real Google OAuth still needs credentials and an auth adapter.
 - Node test coverage for pricing, search, and market lock rules.
 - Product, architecture, API, data-cache, roadmap, and testing documents.
 
@@ -24,6 +25,12 @@ npm start
 ```
 
 Then open `http://localhost:4173`.
+
+If port `4173` is already in use, stop the previous Hoopfolio server or run Next on another port with:
+
+```bash
+npx next dev -H 127.0.0.1 -p 4174
+```
 
 The test app lets you:
 
@@ -36,6 +43,13 @@ The test app lets you:
 - Open the Guide button for a guided tour through the major sections.
 
 Local simulator state is stored in `.cache/hoopfolio-test-state.json` and is ignored by git.
+Local app identity/session state is stored in `.cache/hoopfolio-app-state.json` and is ignored by git.
+
+The old static server is still available for comparison:
+
+```bash
+npm run legacy:start
+```
 
 ## Run Tests
 
@@ -47,7 +61,7 @@ npm test
 
 During MVP development, no tests or local UI flows should call live NBA APIs. All data needed for repeatable development should be checked into `src/data/cache/` or generated into a local cache file. See [docs/03-data-cache-strategy.md](docs/03-data-cache-strategy.md).
 
-The current simulator fixture is `src/data/cache/sim-week-2024-25.json`. It is hand-seeded previous-season-style data for product testing, not an official NBA dataset.
+The current simulator fixture is `src/data/cache/recorded/2024-25/midseason-week-2025-01-06.json`. It is structured like a recorded replay with four prior weeks of per-player context so midseason stock behavior can be tested without live calls. Replace or refresh this file from an approved provider ingestion job when a licensed/approved source is selected.
 
 ## Visual Assets
 
@@ -57,11 +71,11 @@ The prototype currently references NBA CDN player headshots and team logos in th
 
 Recommended next steps:
 
-1. Convert the prototype into a proper app stack, likely React/Next.js plus a small backend API.
-2. Add persistent users, sessions, portfolios, transactions, and weekly contests with PostgreSQL.
-3. Replace the hand-seeded simulator with recorded previous-season data cached locally.
-4. Add player profile pages with charts, result stock value explanations, and game logs.
-5. Build a transaction preview modal with concentration warnings and boost explanations.
-6. Add admin controls for fixture resets, data ingestion status, stat corrections, and settlement replay.
-7. Expand tests around full-week settlement, stat corrections, postponed games, and leaderboard tie-breakers.
-8. Decide the first real data provider and implement a cache-first ingestion adapter with strict rate limiting.
+1. Move file-backed persistence to PostgreSQL with migrations for users, sessions, contests, portfolios, transactions, holdings, leaderboard entries, and ingestion runs.
+2. Replace the Google sign-in demo with real Google OAuth using environment-based credentials.
+3. Build dedicated profile and portfolio-stat screens for weekly and historical performance.
+4. Build separate weekly, live, and historical leaderboard pages.
+5. Add a provider ingestion command that records raw previous-season responses locally before normalization.
+6. Add player profile pages with charts, result stock value explanations, and game logs.
+7. Build a transaction preview modal with concentration warnings and boost explanations.
+8. Add admin controls for fixture resets, data ingestion status, stat corrections, and settlement replay.
