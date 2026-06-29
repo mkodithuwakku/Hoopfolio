@@ -79,6 +79,26 @@ export default function HomePage() {
             </div>
           </section>
 
+          <section className="dashboard-grid">
+            <div id="featuredGameCard" className="market-visual">
+              <img src="/assets/neutral-court.svg" alt="" aria-hidden="true" />
+              <div className="market-visual-copy">
+                <span>Live stock board</span>
+                <strong id="stockCount">- stocks</strong>
+              </div>
+            </div>
+            <div className="leader-card visual-leader-card">
+              <span className="label">Current top projected edge</span>
+              <div id="topEdgeCard" className="dashboard-player-card"></div>
+            </div>
+            <div className="leader-card visual-leader-card">
+              <span className="label">Best buy-low signal</span>
+              <div id="topBuyLowCard" className="dashboard-player-card"></div>
+            </div>
+          </section>
+
+          <section className="market-stories" id="marketStories"></section>
+
           <section id="games" className="tool-surface games-surface">
             <div className="section-heading">
               <div>
@@ -100,26 +120,6 @@ export default function HomePage() {
             <div id="teamDirectory" className="team-directory"></div>
             <div id="teamRoster" className="team-roster"></div>
           </section>
-
-          <section className="dashboard-grid">
-            <div className="market-visual">
-              <img src="/assets/neutral-court.svg" alt="" aria-hidden="true" />
-              <div className="market-visual-copy">
-                <span>Live stock board</span>
-                <strong id="stockCount">- stocks</strong>
-              </div>
-            </div>
-            <div className="leader-card visual-leader-card">
-              <span className="label">Current top projected edge</span>
-              <div id="topEdgeCard" className="dashboard-player-card"></div>
-            </div>
-            <div className="leader-card visual-leader-card">
-              <span className="label">Best buy-low signal</span>
-              <div id="topBuyLowCard" className="dashboard-player-card"></div>
-            </div>
-          </section>
-
-          <section className="market-stories" id="marketStories"></section>
 
           <section id="stocks" className="tool-surface">
             <div className="section-heading">

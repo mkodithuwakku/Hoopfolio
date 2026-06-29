@@ -39,13 +39,18 @@ export function calculateStockValue(input, config = DEFAULT_PRICING_CONFIG) {
   );
   const actualFantasyPoints = input.actualFantasyPoints ?? 0;
   const volatilityMultiplier = input.volatilityMultiplier ?? 1;
+  const carryPercent = input.carryPercent ?? 0;
   const performanceRatio = actualFantasyPoints / expectedFantasyPoints;
   let rawReturnPercent = (performanceRatio - 1) * volatilityMultiplier;
 
   const isLowProjection = expectedFantasyPoints < config.lowProjectionThreshold;
+  let lowProjectionProtectionApplied = false;
   if (isLowProjection && rawReturnPercent > 0) {
     rawReturnPercent *= config.lowProjectionDampening;
+    lowProjectionProtectionApplied = true;
   }
+
+  rawReturnPercent += carryPercent;
 
   const finalReturnPercent = clamp(
     rawReturnPercent,
@@ -62,7 +67,8 @@ export function calculateStockValue(input, config = DEFAULT_PRICING_CONFIG) {
     rawReturnPercent: roundNumber(rawReturnPercent, 4),
     finalReturnPercent: roundNumber(finalReturnPercent, 4),
     finalStockValue: roundNumber(finalStockValue, 2),
-    lowProjectionProtectionApplied: Boolean(isLowProjection && rawReturnPercent > 0),
+    lowProjectionProtectionApplied,
+    carryPercent,
     returnCapApplied:
       rawReturnPercent < config.minReturnCap || rawReturnPercent > config.maxReturnCap,
     explanation: buildStockExplanation({
@@ -70,7 +76,8 @@ export function calculateStockValue(input, config = DEFAULT_PRICING_CONFIG) {
       finalReturnPercent,
       returnCapApplied:
         rawReturnPercent < config.minReturnCap || rawReturnPercent > config.maxReturnCap,
-      lowProjectionProtectionApplied: Boolean(isLowProjection && rawReturnPercent > 0)
+      lowProjectionProtectionApplied,
+      carryPercent
     })
   };
 }
@@ -112,6 +119,10 @@ function buildStockExplanation(details) {
 
   if (details.lowProjectionProtectionApplied) {
     notes.push("Low-projection protection dampened upside for a small expected role.");
+  }
+
+  if (details.carryPercent > 0) {
+    notes.push(`Reliability carry added ${roundNumber(details.carryPercent * 100, 1)}% for high-volume consistency.`);
   }
 
   if (details.returnCapApplied) {

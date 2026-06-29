@@ -59,6 +59,19 @@ test("dampens upside for tiny projection players", () => {
   assert.equal(result.finalReturnPercent, 0.45);
 });
 
+test("adds reliability carry to stock value", () => {
+  const result = calculateStockValue({
+    openingPrice: 100,
+    expectedFantasyPoints: 140,
+    actualFantasyPoints: 140,
+    carryPercent: 0.035,
+    volatilityMultiplier: 1
+  });
+
+  assert.equal(result.finalReturnPercent, 0.035);
+  assert.equal(result.finalStockValue, 103.5);
+});
+
 test("calculates capped loyalty discount and purchase price", () => {
   const discount = calculateLoyaltyDiscount(7);
 

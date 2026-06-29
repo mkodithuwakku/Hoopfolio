@@ -36,6 +36,7 @@ const elements = {
   playerCardClose: document.querySelector("#playerCardClose"),
   playerCardContent: document.querySelector("#playerCardContent"),
   stockCount: document.querySelector("#stockCount"),
+  featuredGameCard: document.querySelector("#featuredGameCard"),
   topEdgeCard: document.querySelector("#topEdgeCard"),
   topBuyLowCard: document.querySelector("#topBuyLowCard"),
   marketStories: document.querySelector("#marketStories"),
@@ -116,6 +117,7 @@ function bindEvents() {
   elements.googleDemoButton?.addEventListener("click", createGoogleDemoSession);
   elements.stockRows.addEventListener("click", handleStockAction);
   elements.marketStories.addEventListener("click", handleStockAction);
+  elements.featuredGameCard?.addEventListener("click", handleFeaturedGameAction);
   elements.gameSlate?.addEventListener("click", handleGameSelection);
   elements.gameDetail?.addEventListener("click", handleGameDetailAction);
   elements.teamDirectory?.addEventListener("click", handleTeamSelection);
@@ -169,6 +171,7 @@ function applySnapshot(snapshot) {
 
   const topEdge = [...snapshot.stocks].sort((a, b) => b.projectedReturn - a.projectedReturn)[0];
   const topBuyLow = snapshot.buyLow[0];
+  renderFeaturedGame(snapshot);
   elements.topEdgeCard.innerHTML = renderDashboardPlayerCard(topEdge, "Projected edge");
   elements.topBuyLowCard.innerHTML = renderDashboardPlayerCard(topBuyLow, "Buy-low score");
 
@@ -222,7 +225,6 @@ function renderRows(stocks) {
   elements.stockRows.innerHTML = stocks
     .map((stock) => {
       const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
-      const trend = trendDetails(stock);
       const avatar = playerImage(stock, "large");
       return `
         <tr>
@@ -261,7 +263,7 @@ function renderRows(stocks) {
           <td>${stock.gamesPlayedThisWeek} / ${stock.gamesRemainingThisWeek}</td>
           <td>${stock.ownershipPercent}%</td>
           <td>
-            ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
+            ${trendPill(stock)}
           </td>
           <td>
             <div class="tag-row">
@@ -300,6 +302,35 @@ function renderMarketStories(snapshot) {
   `;
 }
 
+function renderFeaturedGame(snapshot) {
+  if (!elements.featuredGameCard) return;
+  const activeDay = snapshot.sim.activeDay;
+  const games = activeDay?.games ?? [];
+  if (!games.length) return;
+
+  const featured = [...games]
+    .map((game) => ({
+      game,
+      stocks: stocksForGame(game.eventId, snapshot.stocks)
+    }))
+    .sort((a, b) => b.stocks.length - a.stocks.length)[0];
+
+  const topNames = featured.stocks
+    .slice(0, 3)
+    .map((stock) => stock.playerName.split(" ").at(-1))
+    .join(" · ");
+
+  elements.featuredGameCard.innerHTML = `
+    <img src="/assets/neutral-court.svg" alt="" aria-hidden="true" />
+    <div class="featured-game-copy">
+      <span class="eyebrow">Featured game</span>
+      <h3>${featured.game.shortName ?? featured.game.name}</h3>
+      <p>${activeDay.label} · ${featured.stocks.length} buyable stocks${topNames ? ` · ${topNames}` : ""}</p>
+      <button type="button" data-game-jump="${featured.game.eventId}">View slate</button>
+    </div>
+  `;
+}
+
 function renderDashboardPlayerCard(stock, label) {
   const trend = trendDetails(stock);
   return `
@@ -313,9 +344,10 @@ function renderDashboardPlayerCard(stock, label) {
       </div>
     </div>
     <div class="dashboard-player-stats">
-      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
+      ${trendPill(stock)}
       <span class="${stock.projectedReturn >= 0 ? "positive" : "negative"}">${formatPercent(stock.projectedReturn)} proj</span>
       <span class="${stock.previousWeeksImpactPercent >= 0 ? "positive" : "negative"}">${formatPercent(stock.previousWeeksImpactPercent)} prior</span>
+      ${stock.reliabilityCarryPercent > 0 ? `<span class="positive">${formatPercent(stock.reliabilityCarryPercent)} carry</span>` : ""}
       <span>${stock.gamesRemainingThisWeek} games left</span>
     </div>
   `;
@@ -332,7 +364,7 @@ function renderStoryCard(stock) {
       <div class="story-card-body">
         <div class="story-card-title">
           <button class="link-button player-name-link" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
-          ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
+          ${trendPill(stock)}
         </div>
         <div class="story-metrics">
           <span>${formatPercent(stock.currentReturn)} live</span>
@@ -365,31 +397,29 @@ function renderGames(snapshot) {
   elements.gameSlate.innerHTML = games
     .map((game) => {
       const active = String(game.eventId) === String(state.selectedGameId);
+      const playerCount = stocksForGame(game.eventId, snapshot.stocks).length;
       return `
         <button class="game-card ${active ? "active" : ""}" type="button" data-game-id="${game.eventId}">
-          <span class="game-status">${game.status ?? "Final"}</span>
+          <span class="game-status">Replay market</span>
           <span class="game-matchup">
-            ${teamMini(game.awayTeam)} <strong>${game.awayScore ?? "-"}</strong>
+            ${teamMini(game.awayTeam)}
             <span class="at-symbol">@</span>
-            ${teamMini(game.homeTeam)} <strong>${game.homeScore ?? "-"}</strong>
+            ${teamMini(game.homeTeam)}
           </span>
+          <span class="subtle">${playerCount} buyable player stocks</span>
         </button>
       `;
     })
     .join("");
 
   const selectedGame = games.find((game) => String(game.eventId) === String(state.selectedGameId));
-  const players = snapshot.stocks
-    .map((stock) => ({
-      stock,
-      log: stock.gameLogs.find((log) => String(log.eventId) === String(state.selectedGameId))
-    }))
-    .filter((entry) => entry.log)
+  const players = stocksForGame(state.selectedGameId, snapshot.stocks)
+    .map((stock) => ({ stock }))
     .sort((a, b) => {
       if (a.stock.teamAbbreviation !== b.stock.teamAbbreviation) {
         return a.stock.teamAbbreviation.localeCompare(b.stock.teamAbbreviation);
       }
-      return b.log.fantasyPoints - a.log.fantasyPoints;
+      return b.stock.projectedFantasyPoints - a.stock.projectedFantasyPoints;
     });
 
   const awayRows = players.filter((entry) => entry.stock.teamId === selectedGame.awayTeam?.id);
@@ -404,8 +434,8 @@ function renderGames(snapshot) {
       <span class="game-total">${players.length} player stocks</span>
     </div>
     <div class="game-team-grid">
-      ${renderGameTeam(selectedGame.awayTeam, selectedGame.awayScore, awayRows)}
-      ${renderGameTeam(selectedGame.homeTeam, selectedGame.homeScore, homeRows)}
+      ${renderGameTeam(selectedGame.awayTeam, awayRows)}
+      ${renderGameTeam(selectedGame.homeTeam, homeRows)}
     </div>
   `;
 }
@@ -464,8 +494,6 @@ function renderTeamDirectory(snapshot) {
 
 function renderTeamRosterPlayer(stock) {
   const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
-  const trend = trendDetails(stock);
-  const latestLog = stock.gameLogs.at(-1);
   return `
     <article class="team-roster-player">
       <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
@@ -473,33 +501,33 @@ function renderTeamRosterPlayer(stock) {
       </button>
       <div>
         <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
-        <span class="subtle">${stock.position} · ${latestLog ? `${latestLog.fantasyPoints} FP last log` : `${stock.projectedFantasyPoints} proj FP`}</span>
+        <span class="subtle">${stock.position} · ${stock.recentAverageFantasyPoints ?? "-"} recent FP avg</span>
       </div>
-      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: "Trend score" })}
+      ${trendPill(stock)}
       <button type="button" data-buy="${stock.playerId}" data-default-amount="250" ${disabled}>Buy</button>
     </article>
   `;
 }
 
-function renderGameTeam(team, score, rows) {
+function renderGameTeam(team, rows) {
   return `
     <section class="game-team-panel" style="--team-color: ${team?.color ?? "#49d6e8"}">
       <header>
         ${teamMini(team)}
-        <strong>${score ?? "-"}</strong>
+        <strong>${rows.length} stocks</strong>
       </header>
       <div class="game-player-list">
         ${
           rows.length
-            ? rows.map(({ stock, log }) => renderGamePlayerRow(stock, log)).join("")
-            : `<p class="empty-state">No player logs found for this team.</p>`
+            ? rows.map(({ stock }) => renderGamePlayerRow(stock)).join("")
+            : `<p class="empty-state">No scheduled player stocks found for this team.</p>`
         }
       </div>
     </section>
   `;
 }
 
-function renderGamePlayerRow(stock, log) {
+function renderGamePlayerRow(stock) {
   const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
   return `
     <article class="game-player-row">
@@ -508,12 +536,12 @@ function renderGamePlayerRow(stock, log) {
       </button>
       <div>
         <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
-        <span class="subtle">${stock.position} · ${formatMinutes(log.stats.minutes)} min · ${log.fantasyPoints} FP</span>
+        <span class="subtle">${stock.position} · ${stock.recentAverageFantasyPoints ?? "-"} recent FP avg · ${stock.gamesRemainingThisWeek} games left</span>
       </div>
       <div class="game-stat-strip">
-        <span>${log.stats.points} PTS</span>
-        <span>${log.stats.rebounds} REB</span>
-        <span>${log.stats.assists} AST</span>
+        <span>${formatCoins(stock.currentPrice)}</span>
+        <span>${formatPercent(stock.projectedReturn)} proj</span>
+        ${stock.reliabilityCarryPercent > 0 ? `<span>${formatPercent(stock.reliabilityCarryPercent)} carry</span>` : ""}
       </div>
       <button type="button" data-buy="${stock.playerId}" data-default-amount="250" ${disabled}>Buy</button>
     </article>
@@ -542,16 +570,24 @@ function openPlayerCard(playerId) {
       ${metricBox("Prior impact", formatPriorImpact(stock.previousWeeksImpactPercent))}
     </div>
     <div class="player-card-signals">
-      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: "Trend score" })}
-      ${scorePill(stock.priorFormScore, { min: 0, max: 100, icon: "↺", title: "Prior-week form score" })}
-      ${scorePill(stock.buyLowScore, { min: 0, max: 100, icon: "↓", title: "Buy-low score" })}
-      ${scorePill(100 - stock.volatilityRating, { min: 0, max: 100, icon: "σ", title: "Stability score" })}
+      ${trendPill(stock)}
+      ${signalPill("Prior form", stock.priorFormScore, { min: 0, max: 100, icon: "↺" })}
+      ${signalPill("Buy-low", stock.buyLowScore, { min: 0, max: 100, icon: "↓" })}
+      ${signalPill("Stability", 100 - stock.volatilityRating, { min: 0, max: 100, icon: "σ" })}
+      ${stock.reliabilityCarryPercent > 0 ? chip(`Blue-chip carry ${formatPercent(stock.reliabilityCarryPercent)}`, "chip-boost", "+") : ""}
+    </div>
+    <div class="price-chart-card">
+      <div class="price-chart-heading">
+        <span class="label">Stock price</span>
+        <strong>${stock.currentPrice.toFixed(2)}</strong>
+      </div>
+      ${renderPriceChart(stock.priceHistory)}
     </div>
     ${stock.openingPriceBasis ? `<p class="player-card-copy">${stock.openingPriceBasis}</p>` : ""}
     <p class="player-card-copy">${stock.resultExplanation}</p>
     <div class="player-game-log">
-      <h4>Replay Game Log</h4>
-      ${stock.gameLogs.map(renderPlayerGameLog).join("")}
+      <h4>Revealed Game Log</h4>
+      ${stock.gameLogs.length ? stock.gameLogs.map(renderPlayerGameLog).join("") : `<p class="empty-state">This replay has not advanced far enough to reveal this player's game result.</p>`}
     </div>
     <div class="trade-control player-card-trade">
       <input data-amount-for="${stock.playerId}" type="number" min="25" step="25" value="500" aria-label="Coins to buy ${stock.playerName}" ${disabled} />
@@ -565,6 +601,53 @@ function openPlayerCard(playerId) {
 function closePlayerCard() {
   elements.playerCardOverlay?.setAttribute("aria-hidden", "true");
   document.body.classList.remove("player-card-open");
+}
+
+function renderPriceChart(history = []) {
+  const points = history.length ? history : [];
+  if (points.length < 2) {
+    return `<p class="empty-state">Price history will build as the replay advances.</p>`;
+  }
+
+  const width = 640;
+  const height = 180;
+  const padding = 18;
+  const prices = points.map((point) => point.price);
+  const minPrice = Math.min(...prices);
+  const maxPrice = Math.max(...prices);
+  const range = Math.max(maxPrice - minPrice, 1);
+  const coordinates = points.map((point, index) => {
+    const x = padding + (index / Math.max(points.length - 1, 1)) * (width - padding * 2);
+    const y = height - padding - ((point.price - minPrice) / range) * (height - padding * 2);
+    return { ...point, x: roundForSvg(x), y: roundForSvg(y) };
+  });
+  const actualPoints = coordinates.filter((point) => point.kind !== "projected");
+  const projectedStart = actualPoints.at(-1);
+  const projectedPoint = coordinates.find((point) => point.kind === "projected");
+  const actualLine = actualPoints.map((point) => `${point.x},${point.y}`).join(" ");
+  const projectedLine =
+    projectedStart && projectedPoint ? `${projectedStart.x},${projectedStart.y} ${projectedPoint.x},${projectedPoint.y}` : "";
+  const isUp = coordinates.at(-1).price >= coordinates[0].price;
+
+  return `
+    <svg class="price-chart ${isUp ? "up" : "down"}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Stock price history">
+      <line x1="${padding}" y1="${padding}" x2="${padding}" y2="${height - padding}" />
+      <line x1="${padding}" y1="${height - padding}" x2="${width - padding}" y2="${height - padding}" />
+      <polyline class="price-chart-line" points="${actualLine}" />
+      ${projectedLine ? `<polyline class="price-chart-line projected" points="${projectedLine}" />` : ""}
+      ${coordinates
+        .map(
+          (point) => `
+            <circle class="${point.kind === "projected" ? "projected" : ""}" cx="${point.x}" cy="${point.y}" r="4">
+              <title>${point.label}: ${point.price.toFixed(2)}</title>
+            </circle>
+          `
+        )
+        .join("")}
+      <text x="${padding}" y="14">${maxPrice.toFixed(2)}</text>
+      <text x="${padding}" y="${height - 4}">${minPrice.toFixed(2)}</text>
+    </svg>
+  `;
 }
 
 function renderPlayerGameLog(log) {
@@ -665,7 +748,6 @@ function renderSignalList(target, stocks, scoreKey) {
   target.innerHTML = stocks
     .map(
       (stock) => {
-        const trend = trendDetails(stock);
         return `
         <article class="signal-item">
           <header>
@@ -678,7 +760,7 @@ function renderSignalList(target, stocks, scoreKey) {
                 <span class="subtle">${teamBadge(stock)}</span>
               </div>
             </div>
-            ${scorePill(stock[scoreKey], { min: scoreKey === "trendingScore" ? -100 : 0, max: 100, icon: trend.arrow })}
+            ${scoreKey === "trendingScore" ? trendPill(stock) : signalPill("Buy-low", stock[scoreKey], { min: 0, max: 100, icon: "↓" })}
           </header>
           <p>${stock.resultExplanation}</p>
           <div class="tag-row">
@@ -721,6 +803,14 @@ function handleGameSelection(event) {
   if (!gameId) return;
   state.selectedGameId = gameId;
   renderGames(state.snapshot);
+}
+
+function handleFeaturedGameAction(event) {
+  const gameId = event.target.closest("[data-game-jump]")?.dataset.gameJump;
+  if (!gameId) return;
+  state.selectedGameId = gameId;
+  renderGames(state.snapshot);
+  document.querySelector("#games")?.scrollIntoView({ block: "start", behavior: "smooth" });
 }
 
 function handleTeamSelection(event) {
@@ -853,21 +943,44 @@ function scoreChip(label, value, min, max, icon) {
   return `<span class="tag indicator-chip spectrum-chip" style="--score-color: ${color}">${icon ? `<span aria-hidden="true">${icon}</span>` : ""}${label}</span>`;
 }
 
-function scorePill(value, { min = 0, max = 100, icon = "", title = "" } = {}) {
-  const color = scoreColor(value, min, max);
+function stocksForGame(eventId, stocks = state.stocks) {
+  return stocks.filter((stock) =>
+    (stock.scheduledGameLogs ?? stock.gameLogs ?? []).some((log) => String(log.eventId) === String(eventId))
+  );
+}
+
+function trendPill(stock) {
+  const trend = trendDetails(stock);
   return `
-    <span class="trend-pill spectrum-pill" style="--score-color: ${color}" title="${title}">
-      ${icon ? `<span aria-hidden="true">${icon}</span>` : ""}
-      ${Math.abs(Math.round(value))}
+    <span class="trend-pill ${trend.className}" title="${trend.title}: ${Math.round(stock.trendingScore)}">
+      <span aria-hidden="true">${trend.arrow}</span>
+      <span>${trend.label}</span>
     </span>
   `;
 }
 
+function signalPill(label, value, { min = 0, max = 100, icon = "" } = {}) {
+  const quality = signalQuality(value, min, max);
+  return `
+    <span class="trend-pill signal-pill ${quality.className}" title="${label}: ${Math.round(value)}">
+      ${icon ? `<span aria-hidden="true">${icon}</span>` : ""}
+      <span>${label} ${quality.label}</span>
+    </span>
+  `;
+}
+
+function signalQuality(value, min = 0, max = 100) {
+  const normalized = clamp((value - min) / (max - min), 0, 1);
+  if (normalized >= 0.72) return { label: "strong", className: "trend-up" };
+  if (normalized <= 0.32) return { label: "weak", className: "trend-down" };
+  return { label: "watch", className: "trend-flat" };
+}
+
 function scoreColor(value, min = 0, max = 100) {
   const normalized = clamp((value - min) / (max - min), 0, 1);
-  const hue = Math.round(normalized * 125);
-  const lightness = Math.round(50 + normalized * 8);
-  return `hsl(${hue} 82% ${lightness}%)`;
+  const hue = Math.round(normalized * 122);
+  const lightness = Math.round(45 + normalized * 7);
+  return `hsl(${hue} 86% ${lightness}%)`;
 }
 
 function trendDetails(stock) {
@@ -1042,6 +1155,10 @@ function formatPercent(value) {
 
 function formatPriorImpact(value) {
   return `Prior ${formatPercent(value ?? 0)}`;
+}
+
+function roundForSvg(value) {
+  return Math.round(value * 100) / 100;
 }
 
 function initials(name) {
