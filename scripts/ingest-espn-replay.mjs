@@ -413,16 +413,18 @@ function buildFixturePlayer({ player, targetDates: dates, priorStart: firstPrior
     };
   });
   const nonZeroPriorWeeks = priorWeekRows.filter((week) => week.games > 0);
-  const recentAverageFantasyPoints = nonZeroPriorWeeks.length
+  const rawRecentAverageFantasyPoints = nonZeroPriorWeeks.length
     ? roundNumber(
         nonZeroPriorWeeks.reduce((sum, week) => sum + week.averageFantasyPoints, 0) /
           nonZeroPriorWeeks.length,
         1
       )
     : roundNumber(player.targetFantasy / Math.max(gamesScheduled, 1), 1);
-  const expectedFantasyPoints = roundNumber(recentAverageFantasyPoints * Math.max(gamesScheduled, 1));
+  const recentAverageFantasyPoints = Math.max(rawRecentAverageFantasyPoints, 0);
+  const projectionAverage = Math.max(recentAverageFantasyPoints, 1);
+  const expectedFantasyPoints = roundNumber(projectionAverage * Math.max(gamesScheduled, 1));
   const projectedRemainingFantasyPoints = dailyFantasyPoints.map((value) =>
-    value > 0 ? recentAverageFantasyPoints : 0
+    value > 0 ? projectionAverage : 0
   );
   const priorAverages = nonZeroPriorWeeks.map((week) => week.averageFantasyPoints);
   const historicalVolatility = priorAverages.length
@@ -432,6 +434,13 @@ function buildFixturePlayer({ player, targetDates: dates, priorStart: firstPrior
   const lastAverage = priorAverages.at(-1) ?? recentAverageFantasyPoints;
   const momentum = roundNumber(lastAverage - firstAverage, 1);
   const targetAverage = roundNumber(player.targetFantasy / Math.max(gamesScheduled, 1), 1);
+  const priorFormPricing = calculatePriorFormPricing({
+    firstAverage,
+    historicalVolatility,
+    lastAverage,
+    priorWeeksAvailable: nonZeroPriorWeeks.length,
+    recentAverageFantasyPoints
+  });
 
   return {
     id: slugify(`${player.name}-${player.id}`),
@@ -443,7 +452,10 @@ function buildFixturePlayer({ player, targetDates: dates, priorStart: firstPrior
     teamAbbreviation: player.teamAbbreviation,
     position: player.position,
     status: "Active",
-    openingPrice: 100,
+    openingPrice: priorFormPricing.openingPrice,
+    previousWeeksImpactPercent: priorFormPricing.impactPercent,
+    priorFormScore: priorFormPricing.score,
+    openingPriceBasis: priorFormPricing.explanation,
     expectedFantasyPoints,
     dailyFantasyPoints,
     gameLogs: player.targetLogs
@@ -477,6 +489,37 @@ function buildFixturePlayer({ player, targetDates: dates, priorStart: firstPrior
       recentAverageFantasyPoints,
       historicalVolatility
     })
+  };
+}
+
+function calculatePriorFormPricing({
+  firstAverage,
+  historicalVolatility,
+  lastAverage,
+  priorWeeksAvailable,
+  recentAverageFantasyPoints
+}) {
+  const confidence = clamp(priorWeeksAvailable / 4, 0.25, 1);
+  const baselineAverage = 22;
+  const momentumPercent = firstAverage
+    ? (lastAverage - firstAverage) / Math.max(Math.abs(firstAverage), 12)
+    : 0;
+  const recentStrength = (recentAverageFantasyPoints - baselineAverage) / 45;
+  const volatilityDrag = -historicalVolatility / 140;
+  const rawImpact =
+    (0.14 * momentumPercent + 0.1 * recentStrength + 0.04 * volatilityDrag) * confidence;
+  const impactPercent = roundNumber(clamp(rawImpact, -0.22, 0.22), 4);
+  const score = Math.round(clamp(50 + impactPercent * 200, 0, 100));
+  const openingPrice = roundNumber(100 * (1 + impactPercent), 2);
+  const direction = impactPercent >= 0 ? "raised" : "discounted";
+  const momentum = roundNumber(lastAverage - firstAverage, 1);
+  const priorLabel = priorWeeksAvailable === 1 ? "prior week" : "prior weeks";
+
+  return {
+    impactPercent,
+    openingPrice,
+    score,
+    explanation: `${priorWeeksAvailable || 0} ${priorLabel} ${direction} opening price by ${roundNumber(Math.abs(impactPercent) * 100, 1)}% (${recentAverageFantasyPoints} recent FP avg, ${momentum >= 0 ? "+" : ""}${momentum} FP momentum).`
   };
 }
 

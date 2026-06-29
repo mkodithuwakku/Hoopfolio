@@ -240,6 +240,9 @@ function renderRows(stocks) {
           <td>${teamBadge(stock)}</td>
           <td>
             <strong>${stock.currentPrice.toFixed(2)}</strong>
+            <span class="subtle ${stock.previousWeeksImpactPercent >= 0 ? "positive" : "negative"}">
+              ${formatPriorImpact(stock.previousWeeksImpactPercent)} open
+            </span>
             ${
               stock.loyaltyBoost.eligible
                 ? `<span class="subtle">${stock.discountedBuyPrice.toFixed(2)} with boost</span>`
@@ -312,6 +315,7 @@ function renderDashboardPlayerCard(stock, label) {
     <div class="dashboard-player-stats">
       ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
       <span class="${stock.projectedReturn >= 0 ? "positive" : "negative"}">${formatPercent(stock.projectedReturn)} proj</span>
+      <span class="${stock.previousWeeksImpactPercent >= 0 ? "positive" : "negative"}">${formatPercent(stock.previousWeeksImpactPercent)} prior</span>
       <span>${stock.gamesRemainingThisWeek} games left</span>
     </div>
   `;
@@ -332,6 +336,7 @@ function renderStoryCard(stock) {
         </div>
         <div class="story-metrics">
           <span>${formatPercent(stock.currentReturn)} live</span>
+          <span class="${stock.previousWeeksImpactPercent >= 0 ? "positive" : "negative"}">${formatPriorImpact(stock.previousWeeksImpactPercent)} open</span>
           <span>${stock.actualFantasyPoints}/${stock.projectedFantasyPoints} FP</span>
           ${stock.recentAverageFantasyPoints ? `<span>${stock.priorWeeksIncluded}wk ${stock.recentAverageFantasyPoints} avg</span>` : ""}
           <span>${stock.ownershipPercent}% own</span>
@@ -534,12 +539,15 @@ function openPlayerCard(playerId) {
       ${metricBox("Projected", `${stock.projectedFantasyPoints} FP`)}
       ${metricBox("Actual", `${stock.actualFantasyPoints} FP`)}
       ${metricBox("Games left", stock.gamesRemainingThisWeek)}
+      ${metricBox("Prior impact", formatPriorImpact(stock.previousWeeksImpactPercent))}
     </div>
     <div class="player-card-signals">
       ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: "Trend score" })}
+      ${scorePill(stock.priorFormScore, { min: 0, max: 100, icon: "↺", title: "Prior-week form score" })}
       ${scorePill(stock.buyLowScore, { min: 0, max: 100, icon: "↓", title: "Buy-low score" })}
       ${scorePill(100 - stock.volatilityRating, { min: 0, max: 100, icon: "σ", title: "Stability score" })}
     </div>
+    ${stock.openingPriceBasis ? `<p class="player-card-copy">${stock.openingPriceBasis}</p>` : ""}
     <p class="player-card-copy">${stock.resultExplanation}</p>
     <div class="player-game-log">
       <h4>Replay Game Log</h4>
@@ -814,6 +822,7 @@ function indicatorChips(stock) {
   const trend = trendDetails(stock);
   const chips = [
     scoreChip(trend.label, stock.trendingScore, -100, 100, trend.arrow),
+    scoreChip("Prior form", stock.priorFormScore ?? 50, 0, 100, "↺"),
     stock.buyLowScore >= 75
       ? scoreChip("Buy low", stock.buyLowScore, 0, 100, "↓")
       : stock.buyLowScore >= 60
@@ -1029,6 +1038,10 @@ function formatCoins(value) {
 
 function formatPercent(value) {
   return `${value >= 0 ? "+" : ""}${(value * 100).toFixed(1)}%`;
+}
+
+function formatPriorImpact(value) {
+  return `Prior ${formatPercent(value ?? 0)}`;
 }
 
 function initials(name) {
