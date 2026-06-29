@@ -1,0 +1,1018 @@
+{
+  "id": "espn-2024-25-midseason-week-2025-01-06",
+  "notice": "Real ESPN NBA scoreboard and boxscore replay fixture cached locally. Normal app/test runs read this file and make zero live provider calls.",
+  "source": {
+    "provider": "espn-site-api",
+    "sport": "nba",
+    "season": "2024-25",
+    "replayWeekStart": "2025-01-06",
+    "replayWeekEnd": "2025-01-12",
+    "priorWeeksIncluded": 4,
+    "realGameData": true,
+    "liveProviderCalls": false,
+    "rawCacheDirectory": ".cache/provider-raw/espn/nba/2024-25",
+    "generatedAt": "2026-06-29T21:18:00.604Z",
+    "refreshCommand": "npm run ingest:espn-replay -- --season=2024-25 --week-start=2025-01-06"
+  },
+  "contest": {
+    "id": "espn-2024-25-midseason-week-2025-01-06",
+    "name": "2024-25 ESPN Real Data Replay",
+    "seasonLabel": "2024-25 ESPN cached replay",
+    "startingCoins": 10000,
+    "startsAt": "2025-01-06T17:00:00.000Z",
+    "endsAt": "2025-01-12T23:59:59.000Z"
+  },
+  "teams": [
+    {
+      "id": "4",
+      "espnTeamId": "4",
+      "name": "Chicago",
+      "displayName": "Chicago Bulls",
+      "abbreviation": "CHI",
+      "neutralColor": "#ce1141",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/chi.png"
+    },
+    {
+      "id": "7",
+      "espnTeamId": "7",
+      "name": "Denver",
+      "displayName": "Denver Nuggets",
+      "abbreviation": "DEN",
+      "neutralColor": "#0e2240",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/den.png"
+    },
+    {
+      "id": "8",
+      "espnTeamId": "8",
+      "name": "Detroit",
+      "displayName": "Detroit Pistons",
+      "abbreviation": "DET",
+      "neutralColor": "#1d428a",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/det.png"
+    },
+    {
+      "id": "15",
+      "espnTeamId": "15",
+      "name": "Milwaukee",
+      "displayName": "Milwaukee Bucks",
+      "abbreviation": "MIL",
+      "neutralColor": "#00471b",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/mil.png"
+    },
+    {
+      "id": "3",
+      "espnTeamId": "3",
+      "name": "New Orleans",
+      "displayName": "New Orleans Pelicans",
+      "abbreviation": "NO",
+      "neutralColor": "#0a2240",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/no.png"
+    },
+    {
+      "id": "20",
+      "espnTeamId": "20",
+      "name": "Philadelphia",
+      "displayName": "Philadelphia 76ers",
+      "abbreviation": "PHI",
+      "neutralColor": "#1d428a",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/phi.png"
+    },
+    {
+      "id": "21",
+      "espnTeamId": "21",
+      "name": "Phoenix",
+      "displayName": "Phoenix Suns",
+      "abbreviation": "PHX",
+      "neutralColor": "#29127a",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/phx.png"
+    },
+    {
+      "id": "23",
+      "espnTeamId": "23",
+      "name": "Sacramento",
+      "displayName": "Sacramento Kings",
+      "abbreviation": "SAC",
+      "neutralColor": "#5a2d81",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/sac.png"
+    },
+    {
+      "id": "28",
+      "espnTeamId": "28",
+      "name": "Toronto",
+      "displayName": "Toronto Raptors",
+      "abbreviation": "TOR",
+      "neutralColor": "#d91244",
+      "logoUrl": "https://a.espncdn.com/i/teamlogos/nba/500/tor.png"
+    }
+  ],
+  "days": [
+    {
+      "label": "Monday",
+      "date": "2025-01-06",
+      "marketLocksAt": "2025-01-06T23:30:00.000Z",
+      "games": [
+        "POR @ DET",
+        "PHX @ PHI",
+        "IND @ BKN",
+        "ORL @ NY",
+        "MIL @ TOR",
+        "SA @ CHI",
+        "DAL @ MEM",
+        "LAC @ MIN",
+        "MIA @ SAC"
+      ]
+    },
+    {
+      "label": "Tuesday",
+      "date": "2025-01-07",
+      "marketLocksAt": "2025-01-07T23:30:00.000Z",
+      "games": [
+        "PHX @ CHA",
+        "HOU @ WSH",
+        "LAL @ DAL",
+        "MIN @ NO",
+        "ATL @ UTAH",
+        "BOS @ DEN",
+        "MIA @ GS"
+      ]
+    },
+    {
+      "label": "Wednesday",
+      "date": "2025-01-08",
+      "marketLocksAt": "2025-01-08T23:30:00.000Z",
+      "games": [
+        "OKC @ CLE",
+        "CHI @ IND",
+        "WSH @ PHI",
+        "TOR @ NY",
+        "DET @ BKN",
+        "POR @ NO",
+        "LAC @ DEN",
+        "SA @ MIL"
+      ]
+    },
+    {
+      "label": "Thursday",
+      "date": "2025-01-09",
+      "marketLocksAt": "2025-01-09T23:30:00.000Z",
+      "games": [
+        "TOR @ CLE",
+        "GS @ DET",
+        "MIN @ ORL",
+        "POR @ DAL",
+        "HOU @ MEM",
+        "ATL @ PHX",
+        "MIA @ UTAH"
+      ]
+    },
+    {
+      "label": "Friday",
+      "date": "2025-01-10",
+      "marketLocksAt": "2025-01-10T23:30:00.000Z",
+      "games": [
+        "GS @ IND",
+        "MIL @ ORL",
+        "NO @ PHI",
+        "SAC @ BOS",
+        "OKC @ NY",
+        "WSH @ CHI",
+        "BKN @ DEN"
+      ]
+    },
+    {
+      "label": "Saturday",
+      "date": "2025-01-11",
+      "marketLocksAt": "2025-01-11T23:30:00.000Z",
+      "games": [
+        "UTAH @ PHX",
+        "TOR @ DET",
+        "MEM @ MIN",
+        "MIA @ POR"
+      ]
+    },
+    {
+      "label": "Sunday",
+      "date": "2025-01-12",
+      "marketLocksAt": "2025-01-12T23:30:00.000Z",
+      "games": [
+        "MIL @ NY",
+        "DEN @ DAL",
+        "SAC @ CHI",
+        "NO @ BOS",
+        "IND @ CLE",
+        "PHI @ ORL",
+        "OKC @ WSH",
+        "BKN @ UTAH",
+        "CHA @ PHX"
+      ]
+    }
+  ],
+  "players": [
+    {
+      "id": "devin-booker-3136193",
+      "espnAthleteId": "3136193",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3136193.png",
+      "name": "Devin Booker",
+      "teamId": "21",
+      "teamName": "Phoenix",
+      "teamAbbreviation": "PHX",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 190.5,
+      "dailyFantasyPoints": [
+        32.8,
+        58.2,
+        0,
+        42.6,
+        0,
+        49,
+        56
+      ],
+      "projectedRemainingFantasyPoints": [
+        38.1,
+        38.1,
+        0,
+        38.1,
+        0,
+        38.1,
+        38.1
+      ],
+      "volatilityMultiplier": 0.9725,
+      "ownershipPercent": 46,
+      "trendingScore": 31,
+      "buyLowScore": 37,
+      "volatilityRating": 87,
+      "minutesTrend": 5.2,
+      "usageTrend": 9.6,
+      "loyaltyWeeks": 0,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 2,
+          "averageFantasyPoints": 45.8,
+          "totalFantasyPoints": 91.5
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 1,
+          "averageFantasyPoints": 30.4,
+          "totalFantasyPoints": 30.4
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 0,
+          "averageFantasyPoints": 0,
+          "totalFantasyPoints": 0
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 2,
+          "averageFantasyPoints": 38.2,
+          "totalFantasyPoints": 76.4
+        }
+      ],
+      "recentAverageFantasyPoints": 38.1,
+      "priorWeeksIncluded": 3,
+      "historicalVolatility": 15.4,
+      "projectionBasis": "3-week real ESPN boxscore cache, momentum -7.6 FP",
+      "reasonTags": [
+        "real boxscore",
+        "5 games",
+        "hot week",
+        "high volatility"
+      ]
+    },
+    {
+      "id": "giannis-antetokounmpo-3032977",
+      "espnAthleteId": "3032977",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3032977.png",
+      "name": "Giannis Antetokounmpo",
+      "teamId": "15",
+      "teamName": "Milwaukee",
+      "teamAbbreviation": "MIL",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 256,
+      "dailyFantasyPoints": [
+        37.9,
+        0,
+        55.2,
+        0,
+        75.8,
+        0,
+        41.6
+      ],
+      "projectedRemainingFantasyPoints": [
+        64,
+        0,
+        64,
+        0,
+        64,
+        0,
+        64
+      ],
+      "volatilityMultiplier": 0.90375,
+      "ownershipPercent": 50,
+      "trendingScore": -22,
+      "buyLowScore": 92,
+      "volatilityRating": 65,
+      "minutesTrend": -2.61,
+      "usageTrend": -11.4,
+      "loyaltyWeeks": 1,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 2,
+          "averageFantasyPoints": 67.6,
+          "totalFantasyPoints": 135.2
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 2,
+          "averageFantasyPoints": 66.6,
+          "totalFantasyPoints": 133.1
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 0,
+          "averageFantasyPoints": 0,
+          "totalFantasyPoints": 0
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 3,
+          "averageFantasyPoints": 57.7,
+          "totalFantasyPoints": 173.2
+        }
+      ],
+      "recentAverageFantasyPoints": 64,
+      "priorWeeksIncluded": 3,
+      "historicalVolatility": 9.9,
+      "projectionBasis": "3-week real ESPN boxscore cache, momentum -9.9 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "buy low",
+        "high volatility"
+      ]
+    },
+    {
+      "id": "kevin-durant-3202",
+      "espnAthleteId": "3202",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3202.png",
+      "name": "Kevin Durant",
+      "teamId": "21",
+      "teamName": "Phoenix",
+      "teamAbbreviation": "PHX",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 245,
+      "dailyFantasyPoints": [
+        40.7,
+        37.2,
+        0,
+        41.9,
+        0,
+        39.5,
+        46.1
+      ],
+      "projectedRemainingFantasyPoints": [
+        49,
+        49,
+        0,
+        49,
+        0,
+        49,
+        49
+      ],
+      "volatilityMultiplier": 0.9175,
+      "ownershipPercent": 46,
+      "trendingScore": 50,
+      "buyLowScore": 85,
+      "volatilityRating": 69,
+      "minutesTrend": -0.4,
+      "usageTrend": -7.9,
+      "loyaltyWeeks": 2,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 2,
+          "averageFantasyPoints": 45.8,
+          "totalFantasyPoints": 91.5
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 2,
+          "averageFantasyPoints": 56,
+          "totalFantasyPoints": 112
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 45,
+          "totalFantasyPoints": 179.9
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 2,
+          "averageFantasyPoints": 49,
+          "totalFantasyPoints": 97.9
+        }
+      ],
+      "recentAverageFantasyPoints": 49,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 11,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +3.2 FP",
+      "reasonTags": [
+        "real boxscore",
+        "5 games",
+        "buy low",
+        "high volatility"
+      ]
+    },
+    {
+      "id": "zach-lavine-3064440",
+      "espnAthleteId": "3064440",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3064440.png",
+      "name": "Zach LaVine",
+      "teamId": "4",
+      "teamName": "Chicago",
+      "teamAbbreviation": "CHI",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 146,
+      "dailyFantasyPoints": [
+        60,
+        0,
+        41.8,
+        0,
+        45.5,
+        0,
+        55
+      ],
+      "projectedRemainingFantasyPoints": [
+        36.5,
+        0,
+        36.5,
+        0,
+        36.5,
+        0,
+        36.5
+      ],
+      "volatilityMultiplier": 1.0325,
+      "ownershipPercent": 52,
+      "trendingScore": 95,
+      "buyLowScore": 28,
+      "volatilityRating": 88,
+      "minutesTrend": 2.88,
+      "usageTrend": 14.1,
+      "loyaltyWeeks": 3,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 26.3,
+          "totalFantasyPoints": 26.3
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 2,
+          "averageFantasyPoints": 37,
+          "totalFantasyPoints": 74
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 3,
+          "averageFantasyPoints": 36,
+          "totalFantasyPoints": 107.9
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 2,
+          "averageFantasyPoints": 46.5,
+          "totalFantasyPoints": 93
+        }
+      ],
+      "recentAverageFantasyPoints": 36.5,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 20.2,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +20.2 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "prior trend up",
+        "hot week"
+      ]
+    },
+    {
+      "id": "cade-cunningham-4432166",
+      "espnAthleteId": "4432166",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/4432166.png",
+      "name": "Cade Cunningham",
+      "teamId": "8",
+      "teamName": "Detroit",
+      "teamAbbreviation": "DET",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 183.6,
+      "dailyFantasyPoints": [
+        54.7,
+        0,
+        25.5,
+        59.2,
+        0,
+        60.5,
+        0
+      ],
+      "projectedRemainingFantasyPoints": [
+        45.9,
+        0,
+        45.9,
+        45.9,
+        0,
+        45.9,
+        0
+      ],
+      "volatilityMultiplier": 1.02125,
+      "ownershipPercent": 54,
+      "trendingScore": 92,
+      "buyLowScore": 57,
+      "volatilityRating": 88,
+      "minutesTrend": -0.55,
+      "usageTrend": 4.1,
+      "loyaltyWeeks": 4,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 39.6,
+          "totalFantasyPoints": 39.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 58.4,
+          "totalFantasyPoints": 175.2
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 3,
+          "averageFantasyPoints": 39.1,
+          "totalFantasyPoints": 117.2
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 3,
+          "averageFantasyPoints": 46.4,
+          "totalFantasyPoints": 139.3
+        }
+      ],
+      "recentAverageFantasyPoints": 45.9,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 19.3,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +6.8 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "prior trend up",
+        "high volatility"
+      ]
+    },
+    {
+      "id": "tyrese-maxey-4431678",
+      "espnAthleteId": "4431678",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/4431678.png",
+      "name": "Tyrese Maxey",
+      "teamId": "20",
+      "teamName": "Philadelphia",
+      "teamAbbreviation": "PHI",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 170.8,
+      "dailyFantasyPoints": [
+        48,
+        0,
+        46.6,
+        0,
+        57.2,
+        0,
+        44.3
+      ],
+      "projectedRemainingFantasyPoints": [
+        42.7,
+        0,
+        42.7,
+        0,
+        42.7,
+        0,
+        42.7
+      ],
+      "volatilityMultiplier": 1.08,
+      "ownershipPercent": 55,
+      "trendingScore": 95,
+      "buyLowScore": 61,
+      "volatilityRating": 88,
+      "minutesTrend": 3.2,
+      "usageTrend": 6.3,
+      "loyaltyWeeks": 5,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 28.6,
+          "totalFantasyPoints": 28.6
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 45.7,
+          "totalFantasyPoints": 137
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 3,
+          "averageFantasyPoints": 58.9,
+          "totalFantasyPoints": 176.8
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 37.5,
+          "totalFantasyPoints": 150.1
+        }
+      ],
+      "recentAverageFantasyPoints": 42.7,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 30.3,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +8.9 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "prior trend up",
+        "hot week"
+      ]
+    },
+    {
+      "id": "russell-westbrook-3468",
+      "espnAthleteId": "3468",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3468.png",
+      "name": "Russell Westbrook",
+      "teamId": "7",
+      "teamName": "Denver",
+      "teamAbbreviation": "DEN",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 130.8,
+      "dailyFantasyPoints": [
+        0,
+        43.8,
+        35.2,
+        0,
+        57.2,
+        0,
+        48.5
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        32.7,
+        32.7,
+        0,
+        32.7,
+        0,
+        32.7
+      ],
+      "volatilityMultiplier": 1.08,
+      "ownershipPercent": 55,
+      "trendingScore": 95,
+      "buyLowScore": 35,
+      "volatilityRating": 88,
+      "minutesTrend": 2.42,
+      "usageTrend": 13.5,
+      "loyaltyWeeks": 0,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 18.7,
+          "totalFantasyPoints": 18.7
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 43.9,
+          "totalFantasyPoints": 131.6
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 4,
+          "averageFantasyPoints": 28.2,
+          "totalFantasyPoints": 112.8
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 40,
+          "totalFantasyPoints": 160.1
+        }
+      ],
+      "recentAverageFantasyPoints": 32.7,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 25.2,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +21.3 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "prior trend up",
+        "hot week"
+      ]
+    },
+    {
+      "id": "dejounte-murray-3907497",
+      "espnAthleteId": "3907497",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3907497.png",
+      "name": "Dejounte Murray",
+      "teamId": "3",
+      "teamName": "New Orleans",
+      "teamAbbreviation": "NO",
+      "position": "G",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 162,
+      "dailyFantasyPoints": [
+        0,
+        59.4,
+        33.1,
+        0,
+        35,
+        0,
+        53.8
+      ],
+      "projectedRemainingFantasyPoints": [
+        0,
+        40.5,
+        40.5,
+        0,
+        40.5,
+        0,
+        40.5
+      ],
+      "volatilityMultiplier": 0.8725,
+      "ownershipPercent": 57,
+      "trendingScore": 60,
+      "buyLowScore": 43,
+      "volatilityRating": 55,
+      "minutesTrend": -2.7,
+      "usageTrend": 4.8,
+      "loyaltyWeeks": 1,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 2,
+          "averageFantasyPoints": 39.4,
+          "totalFantasyPoints": 78.8
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 3,
+          "averageFantasyPoints": 45.3,
+          "totalFantasyPoints": 135.9
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 2,
+          "averageFantasyPoints": 37.9,
+          "totalFantasyPoints": 75.7
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 39.5,
+          "totalFantasyPoints": 157.9
+        }
+      ],
+      "recentAverageFantasyPoints": 40.5,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 7.4,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +0.1 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games"
+      ]
+    },
+    {
+      "id": "scottie-barnes-4433134",
+      "espnAthleteId": "4433134",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/4433134.png",
+      "name": "Scottie Barnes",
+      "teamId": "28",
+      "teamName": "Toronto",
+      "teamAbbreviation": "TOR",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 140.4,
+      "dailyFantasyPoints": [
+        34.9,
+        0,
+        42.5,
+        54,
+        0,
+        45.9,
+        0
+      ],
+      "projectedRemainingFantasyPoints": [
+        35.1,
+        0,
+        35.1,
+        35.1,
+        0,
+        35.1,
+        0
+      ],
+      "volatilityMultiplier": 1.0575,
+      "ownershipPercent": 58,
+      "trendingScore": 95,
+      "buyLowScore": 45,
+      "volatilityRating": 88,
+      "minutesTrend": 1.44,
+      "usageTrend": 9.2,
+      "loyaltyWeeks": 2,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 23.5,
+          "totalFantasyPoints": 23.5
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 2,
+          "averageFantasyPoints": 31.3,
+          "totalFantasyPoints": 62.6
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 3,
+          "averageFantasyPoints": 40,
+          "totalFantasyPoints": 119.9
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 3,
+          "averageFantasyPoints": 45.7,
+          "totalFantasyPoints": 137
+        }
+      ],
+      "recentAverageFantasyPoints": 35.1,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 22.2,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum +22.2 FP",
+      "reasonTags": [
+        "real boxscore",
+        "4 games",
+        "prior trend up",
+        "hot week"
+      ]
+    },
+    {
+      "id": "domantas-sabonis-3155942",
+      "espnAthleteId": "3155942",
+      "headshotUrl": "https://a.espncdn.com/i/headshots/nba/players/full/3155942.png",
+      "name": "Domantas Sabonis",
+      "teamId": "23",
+      "teamName": "Sacramento",
+      "teamAbbreviation": "SAC",
+      "position": "F",
+      "status": "Active",
+      "openingPrice": 100,
+      "expectedFantasyPoints": 152.1,
+      "dailyFantasyPoints": [
+        65.1,
+        0,
+        0,
+        0,
+        60.1,
+        0,
+        50
+      ],
+      "projectedRemainingFantasyPoints": [
+        50.7,
+        0,
+        0,
+        0,
+        50.7,
+        0,
+        50.7
+      ],
+      "volatilityMultiplier": 1.08,
+      "ownershipPercent": 58,
+      "trendingScore": -32,
+      "buyLowScore": 55,
+      "volatilityRating": 88,
+      "minutesTrend": 7.83,
+      "usageTrend": 7.7,
+      "loyaltyWeeks": 3,
+      "priorWeeks": [
+        {
+          "weekStart": "2024-12-09",
+          "games": 1,
+          "averageFantasyPoints": 65.5,
+          "totalFantasyPoints": 65.5
+        },
+        {
+          "weekStart": "2024-12-16",
+          "games": 4,
+          "averageFantasyPoints": 53.3,
+          "totalFantasyPoints": 213.2
+        },
+        {
+          "weekStart": "2024-12-23",
+          "games": 1,
+          "averageFantasyPoints": 37.9,
+          "totalFantasyPoints": 37.9
+        },
+        {
+          "weekStart": "2024-12-30",
+          "games": 4,
+          "averageFantasyPoints": 46.1,
+          "totalFantasyPoints": 184.5
+        }
+      ],
+      "recentAverageFantasyPoints": 50.7,
+      "priorWeeksIncluded": 4,
+      "historicalVolatility": 27.6,
+      "projectionBasis": "4-week real ESPN boxscore cache, momentum -19.4 FP",
+      "reasonTags": [
+        "real boxscore",
+        "3 games",
+        "hot week",
+        "high volatility"
+      ]
+    }
+  ],
+  "leaderboardBots": [
+    {
+      "id": "bot-value",
+      "displayName": "Value Hunter",
+      "dailyValues": [
+        10000,
+        10120,
+        10270,
+        10410,
+        10520,
+        10680,
+        10810,
+        10920
+      ]
+    },
+    {
+      "id": "bot-stars",
+      "displayName": "Stars Only",
+      "dailyValues": [
+        10000,
+        9940,
+        10080,
+        10220,
+        10160,
+        10420,
+        10510,
+        10600
+      ]
+    },
+    {
+      "id": "bot-contrarian",
+      "displayName": "Low Own Lab",
+      "dailyValues": [
+        10000,
+        10030,
+        9860,
+        10190,
+        10480,
+        10340,
+        10690,
+        10870
+      ]
+    },
+    {
+      "id": "bot-tilt",
+      "displayName": "Panic Seller",
+      "dailyValues": [
+        10000,
+        9810,
+        9640,
+        9890,
+        9720,
+        10020,
+        9840,
+        9950
+      ]
+    }
+  ]
+}

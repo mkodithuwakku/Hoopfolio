@@ -14,7 +14,7 @@ const fixturePath = join(
   cacheDir,
   "recorded",
   "2024-25",
-  "midseason-week-2025-01-06.json"
+  "espn-midseason-week-2025-01-06.json"
 );
 
 export async function getTestMarketSnapshot() {

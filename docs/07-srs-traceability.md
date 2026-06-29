@@ -17,7 +17,8 @@ This repo was scaffolded from `/Users/mkodi/Downloads/Hoopfolio SRS-PRD.pdf`.
 | Result stock explanation | Dashboard table and pricing engine explanation |
 | Loyalty boosts | `calculateLoyaltyDiscount` in `src/domain/pricing.mjs` |
 | Market lock | `src/domain/marketLock.mjs` |
-| Working test market | `src/data/cache/recorded/2024-25/midseason-week-2025-01-06.json`, `src/data/providers/testMarketProvider.mjs` |
+| Working test market | `src/data/cache/recorded/2024-25/espn-midseason-week-2025-01-06.json`, `src/data/providers/testMarketProvider.mjs` |
+| Real previous-season replay ingest | `scripts/ingest-espn-replay.mjs`, `.cache/provider-raw/espn/nba/2024-25/` |
 | Buy/sell local trades | `src/domain/trading.mjs`, `/api/trades/buy`, `/api/trades/sell` |
 | Week simulation | `/api/sim/advance-day`, `/api/sim/reset`, `.cache/hoopfolio-test-state.json` |
 | Users and sessions | `src/data/persistence/localStore.mjs`, `/api/auth/session`, `/api/auth/google-demo` |

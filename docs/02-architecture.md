@@ -21,8 +21,9 @@ This repository started with a dependency-free prototype so the domain rules cou
 ```mermaid
 flowchart LR
   Browser["Next.js app shell"] --> RouteHandlers["/api route handlers"]
-  RouteHandlers --> LocalReplay["Recorded cache replay provider"]
+  RouteHandlers --> LocalReplay["ESPN recorded replay provider"]
   LocalReplay --> ReplayFixture["src/data/cache/recorded JSON"]
+  LocalReplay --> RawCache[".cache/provider-raw/espn JSON"]
   RouteHandlers --> FileState[".cache app + simulator state"]
   RouteHandlers --> Domain["Pricing, trading, search, lock domain modules"]
   Domain --> Snapshot["Market/profile/leaderboard responses"]

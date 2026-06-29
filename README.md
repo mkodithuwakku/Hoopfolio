@@ -2,12 +2,12 @@
 
 Hoopfolio is a free-to-play NBA player stock market game. Users receive a weekly coin budget, build a portfolio of NBA player stocks, trade only during open market windows, and compete on weekly leaderboards.
 
-This implementation is intentionally cache-first. It uses a local recorded-cache replay fixture and local calculation engines so development and tests do not call an NBA data API. Live providers can be added later behind the data provider abstraction.
+This implementation is intentionally cache-first. It uses a real ESPN NBA scoreboard/boxscore replay fixture and local calculation engines so development and tests do not call a live data API. Live providers can be added later behind the data provider abstraction.
 
 ## Current Slice
 
 - Next.js app shell with backend route handlers under `/api/*`.
-- Clickable test market simulator using a local 2024-25 midseason recorded-cache replay.
+- Clickable test market simulator using a real 2024-25 midseason ESPN NBA replay cached locally.
 - Local cached teams, players, games, projections, and weekly market state.
 - Disk-backed users, sessions, portfolio state, trades, week advancement, leaderboard, and reset flow.
 - Pricing engine based on fantasy performance versus expectations.
@@ -45,6 +45,22 @@ The test app lets you:
 Local simulator state is stored in `.cache/hoopfolio-test-state.json` and is ignored by git.
 Local app identity/session state is stored in `.cache/hoopfolio-app-state.json` and is ignored by git.
 
+## Ingest Real Replay Data
+
+The checked-in replay fixture was generated from ESPN NBA scoreboard and boxscore JSON:
+
+```bash
+npm run ingest:espn-replay
+```
+
+By default this records the week of `2025-01-06` from the `2024-25` season and four prior weeks of context. Raw provider responses are saved to `.cache/provider-raw/espn/nba/2024-25/`; rerunning the command reuses those files instead of calling the provider again unless you pass `--force`.
+
+Example override:
+
+```bash
+npm run ingest:espn-replay -- --season=2024-25 --week-start=2025-01-06 --max-players=12
+```
+
 The old static server is still available for comparison:
 
 ```bash
@@ -61,11 +77,11 @@ npm test
 
 During MVP development, no tests or local UI flows should call live NBA APIs. All data needed for repeatable development should be checked into `src/data/cache/` or generated into a local cache file. See [docs/03-data-cache-strategy.md](docs/03-data-cache-strategy.md).
 
-The current simulator fixture is `src/data/cache/recorded/2024-25/midseason-week-2025-01-06.json`. It is structured like a recorded replay with four prior weeks of per-player context so midseason stock behavior can be tested without live calls. Replace or refresh this file from an approved provider ingestion job when a licensed/approved source is selected.
+The current simulator fixture is `src/data/cache/recorded/2024-25/espn-midseason-week-2025-01-06.json`. It is generated from real ESPN NBA scoreboard/boxscore data with four prior weeks of per-player context so midseason stock behavior can be tested without live calls.
 
 ## Visual Assets
 
-The prototype currently references NBA CDN player headshots and team logos in the local simulator fixture, with generated SVG fallbacks if those images fail to load. For a public/commercial release, confirm licensing and asset-use rights before relying on official NBA/player/team imagery.
+The prototype currently references ESPN player headshots and team logos in the generated replay fixture, with generated SVG fallbacks if those images fail to load. For a public/commercial release, confirm licensing and asset-use rights before relying on provider/player/team imagery.
 
 ## What To Work On Next
 

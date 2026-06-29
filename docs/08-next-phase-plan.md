@@ -2,18 +2,19 @@
 
 ## Current Baseline
 
-Hoopfolio now runs as a Next.js app with backend route handlers and cache-first market data. The default replay week is `src/data/cache/recorded/2024-25/midseason-week-2025-01-06.json`, which includes a 2024-25 midseason test week plus four prior weeks of player context. Local test state stays in `.cache/` so development does not call NBA providers.
+Hoopfolio now runs as a Next.js app with backend route handlers and cache-first market data. The default replay week is `src/data/cache/recorded/2024-25/espn-midseason-week-2025-01-06.json`, which is generated from real ESPN NBA scoreboard and boxscore responses for a 2024-25 midseason week plus four prior weeks of player context. Local test state and raw provider responses stay in `.cache/` so development does not call providers during normal app usage.
 
 ## Recorded Data Replacement
 
-The next ingestion milestone is to replace the normalized replay fixture with an approved provider dump:
+The first ingestion milestone is implemented by `scripts/ingest-espn-replay.mjs`:
 
-1. Add an ingestion command such as `npm run ingest:season -- --season=2024-25`.
-2. Fetch only during explicit ingestion runs, never from normal UI requests.
-3. Save raw provider responses under `.cache/provider-raw/<provider>/<season>/`.
-4. Normalize raw games, players, box scores, injuries, and fantasy projections into `src/data/cache/recorded/<season>/`.
-5. Keep deterministic replay weeks in git when they are small enough for tests.
-6. Store large historical caches outside git with checksums and setup instructions.
+1. Fetch only during explicit ingestion runs, never from normal UI requests.
+2. Save raw ESPN responses under `.cache/provider-raw/espn/nba/<season>/`.
+3. Normalize raw games, players, and box scores into `src/data/cache/recorded/<season>/`.
+4. Keep deterministic replay weeks in git when they are small enough for tests.
+5. Store large historical caches outside git with checksums and setup instructions.
+
+The next ingestion milestone is a season-level command such as `npm run ingest:season -- --season=2025-26` that can build multiple contest weeks and handle provider corrections.
 
 ## Next Season Scalability
 

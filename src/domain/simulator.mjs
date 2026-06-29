@@ -18,6 +18,7 @@ export function buildSimSnapshot({ fixture, state }) {
 
   return {
     dataMode: "local-cache",
+    source: fixture.source ?? null,
     fixtureNotice: fixture.notice,
     contest: fixture.contest,
     sim: {
