@@ -1,0 +1,58 @@
+[
+  {
+    "id": "shai-gilgeous-alexander",
+    "name": "Shai Gilgeous-Alexander",
+    "teamId": "okc",
+    "position": "G",
+    "status": "Active"
+  },
+  {
+    "id": "luka-doncic",
+    "name": "Luka Doncic",
+    "teamId": "dal",
+    "position": "G",
+    "status": "Active"
+  },
+  {
+    "id": "jayson-tatum",
+    "name": "Jayson Tatum",
+    "teamId": "bos",
+    "position": "F",
+    "status": "Active"
+  },
+  {
+    "id": "jalen-brunson",
+    "name": "Jalen Brunson",
+    "teamId": "nyk",
+    "position": "G",
+    "status": "Active"
+  },
+  {
+    "id": "anthony-edwards",
+    "name": "Anthony Edwards",
+    "teamId": "min",
+    "position": "G",
+    "status": "Active"
+  },
+  {
+    "id": "victor-wembanyama",
+    "name": "Victor Wembanyama",
+    "teamId": "sas",
+    "position": "C",
+    "status": "Probable"
+  },
+  {
+    "id": "derrick-white",
+    "name": "Derrick White",
+    "teamId": "bos",
+    "position": "G",
+    "status": "Active"
+  },
+  {
+    "id": "naz-reid",
+    "name": "Naz Reid",
+    "teamId": "min",
+    "position": "F/C",
+    "status": "Active"
+  }
+]

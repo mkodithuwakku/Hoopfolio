@@ -1,0 +1,26 @@
+[
+  {
+    "id": "game-001",
+    "homeTeamId": "okc",
+    "awayTeamId": "dal",
+    "startTime": "2026-01-06T00:30:00.000Z"
+  },
+  {
+    "id": "game-002",
+    "homeTeamId": "bos",
+    "awayTeamId": "nyk",
+    "startTime": "2026-01-06T01:00:00.000Z"
+  },
+  {
+    "id": "game-003",
+    "homeTeamId": "min",
+    "awayTeamId": "sas",
+    "startTime": "2026-01-07T00:00:00.000Z"
+  },
+  {
+    "id": "game-004",
+    "homeTeamId": "nyk",
+    "awayTeamId": "okc",
+    "startTime": "2026-01-09T00:30:00.000Z"
+  }
+]

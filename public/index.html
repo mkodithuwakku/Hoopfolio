@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hoopfolio</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <div class="brand-mark">HF</div>
+          <div>
+            <h1>Hoopfolio</h1>
+            <p>Build your NBA player portfolio.</p>
+          </div>
+        </div>
+        <nav class="nav-list" aria-label="Primary">
+          <a href="#dashboard" class="active">Dashboard</a>
+          <a href="#stocks">Stocks</a>
+          <a href="#trending">Trending</a>
+          <a href="#buy-low">Buy Low</a>
+          <a href="#portfolio">Portfolio</a>
+        </nav>
+        <button id="tutorialButton" class="help-button" type="button" aria-label="Open Hoopfolio tutorial">
+          <span aria-hidden="true">i</span>
+          <strong>Guide</strong>
+        </button>
+        <div class="lock-panel">
+          <span class="label">Market</span>
+          <strong id="marketState">Loading</strong>
+          <p id="marketReason">Reading local cache.</p>
+        </div>
+      </aside>
+
+      <main id="dashboard" class="workspace">
+        <section class="topbar">
+          <div>
+            <span class="eyebrow">Prototype week</span>
+            <h2 id="contestName">Hoopfolio Market</h2>
+            <p id="fixtureNotice" class="fixture-notice">Local test fixture.</p>
+          </div>
+          <div class="metrics-strip">
+            <div>
+              <span>Budget</span>
+              <strong id="budget">-</strong>
+            </div>
+            <div>
+              <span>Data</span>
+              <strong>Local</strong>
+            </div>
+            <div>
+              <span>API calls</span>
+              <strong>0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="sim-bar">
+          <div>
+            <span class="label">Week simulator</span>
+            <strong id="simProgress">Loading</strong>
+            <p id="activeGames">Preparing local test market.</p>
+          </div>
+          <div class="sim-actions">
+            <button id="advanceDayButton" type="button">Advance Day</button>
+            <button id="resetSimButton" type="button">Reset Sim</button>
+          </div>
+        </section>
+
+        <section class="dashboard-grid">
+          <div class="market-visual">
+            <img src="/assets/neutral-court.svg" alt="" aria-hidden="true" />
+            <div class="market-visual-copy">
+              <span>Live stock board</span>
+              <strong id="stockCount">- stocks</strong>
+            </div>
+          </div>
+          <div class="leader-card visual-leader-card">
+            <span class="label">Current top projected edge</span>
+            <div id="topEdgeCard" class="dashboard-player-card"></div>
+          </div>
+          <div class="leader-card visual-leader-card">
+            <span class="label">Best buy-low signal</span>
+            <div id="topBuyLowCard" class="dashboard-player-card"></div>
+          </div>
+        </section>
+
+        <section class="market-stories" id="marketStories"></section>
+
+        <section id="stocks" class="tool-surface">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Advanced market</span>
+              <h3>Player Stock Table</h3>
+            </div>
+            <div class="controls">
+              <input id="searchInput" type="search" placeholder="Search player, team, tag" />
+              <select id="sortSelect" aria-label="Sort stocks">
+                <option value="projectedReturnDesc">Projected return</option>
+                <option value="currentPriceAsc">Price low to high</option>
+                <option value="ownershipDesc">Ownership</option>
+                <option value="buyLowDesc">Buy-low score</option>
+                <option value="trendingDesc">Trending</option>
+              </select>
+              <button id="boostFilter" type="button" aria-pressed="false">Boost</button>
+              <button id="buyLowFilter" type="button" aria-pressed="false">Buy Low</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Player</th>
+                  <th>Team</th>
+                  <th>Price</th>
+                  <th>Return</th>
+                  <th>Proj FP</th>
+                  <th>Games</th>
+                  <th>Own</th>
+                  <th>Trend</th>
+                  <th>Signals</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="stockRows"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="split-grid">
+          <div id="trending" class="tool-surface">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">Trending</span>
+                <h3>Market Movers</h3>
+              </div>
+            </div>
+            <div id="trendingList" class="signal-list"></div>
+          </div>
+
+          <div id="buy-low" class="tool-surface">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">Discovery</span>
+                <h3>Buy-Low Candidates</h3>
+              </div>
+            </div>
+            <div id="buyLowList" class="signal-list"></div>
+          </div>
+        </section>
+
+        <section class="split-grid">
+          <div id="portfolio" class="tool-surface portfolio-surface">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">Portfolio</span>
+                <h3>Local Test State</h3>
+              </div>
+            </div>
+            <div class="portfolio-grid">
+              <div>
+                <span>Cash</span>
+                <strong id="portfolioCash">-</strong>
+              </div>
+              <div>
+                <span>Invested</span>
+                <strong id="portfolioInvested">-</strong>
+              </div>
+              <div>
+                <span>Total</span>
+                <strong id="portfolioTotal">-</strong>
+              </div>
+              <div>
+                <span>Return</span>
+                <strong id="portfolioReturn">-</strong>
+              </div>
+            </div>
+            <div class="holdings-list" id="holdingsList"></div>
+          </div>
+
+          <div class="tool-surface">
+            <div class="section-heading">
+              <div>
+                <span class="eyebrow">Leaderboard</span>
+                <h3>Weekly Rank</h3>
+              </div>
+            </div>
+            <div class="leaderboard-list" id="leaderboardList"></div>
+          </div>
+        </section>
+
+        <section class="tool-surface">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Audit trail</span>
+              <h3>Transactions</h3>
+            </div>
+          </div>
+          <div id="transactionList" class="transaction-list"></div>
+        </section>
+      </main>
+    </div>
+
+    <div id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+      <section class="tutorial-card" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
+        <button id="tutorialClose" class="icon-button close-button" type="button" aria-label="Close tutorial">x</button>
+        <span id="tutorialCounter" class="eyebrow">Step 1 of 7</span>
+        <h3 id="tutorialTitle">Welcome to Hoopfolio</h3>
+        <p id="tutorialBody">Build a weekly player-stock portfolio, advance the test week, and climb the leaderboard.</p>
+        <div class="tutorial-actions">
+          <button id="tutorialBack" type="button">Back</button>
+          <button id="tutorialNext" type="button">Next</button>
+        </div>
+      </section>
+    </div>
+    <script type="module" src="/main.js?v=2026-06-29-visual-flow"></script>
+  </body>
+</html>

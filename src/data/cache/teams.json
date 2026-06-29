@@ -1,0 +1,38 @@
+[
+  {
+    "id": "okc",
+    "name": "Oklahoma City",
+    "abbreviation": "OKC",
+    "neutralColor": "#4cc9f0"
+  },
+  {
+    "id": "dal",
+    "name": "Dallas",
+    "abbreviation": "DAL",
+    "neutralColor": "#8ecae6"
+  },
+  {
+    "id": "bos",
+    "name": "Boston",
+    "abbreviation": "BOS",
+    "neutralColor": "#80ed99"
+  },
+  {
+    "id": "nyk",
+    "name": "New York",
+    "abbreviation": "NYK",
+    "neutralColor": "#fcbf49"
+  },
+  {
+    "id": "min",
+    "name": "Minnesota",
+    "abbreviation": "MIN",
+    "neutralColor": "#a0c4ff"
+  },
+  {
+    "id": "sas",
+    "name": "San Antonio",
+    "abbreviation": "SAS",
+    "neutralColor": "#ced4da"
+  }
+]

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 420" role="img" aria-label="Neutral basketball analytics court">
+  <rect width="900" height="420" fill="#10151d"/>
+  <rect x="34" y="34" width="832" height="352" rx="8" fill="#131b24" stroke="#2d3a48" stroke-width="3"/>
+  <line x1="450" y1="34" x2="450" y2="386" stroke="#2d3a48" stroke-width="3"/>
+  <circle cx="450" cy="210" r="72" fill="none" stroke="#2d3a48" stroke-width="3"/>
+  <circle cx="450" cy="210" r="8" fill="#49d6e8"/>
+  <rect x="34" y="115" width="150" height="190" fill="none" stroke="#2d3a48" stroke-width="3"/>
+  <rect x="716" y="115" width="150" height="190" fill="none" stroke="#2d3a48" stroke-width="3"/>
+  <path d="M184 115a95 95 0 0 1 0 190" fill="none" stroke="#2d3a48" stroke-width="3"/>
+  <path d="M716 115a95 95 0 0 0 0 190" fill="none" stroke="#2d3a48" stroke-width="3"/>
+  <g opacity=".9">
+    <circle cx="215" cy="108" r="5" fill="#42d392"/>
+    <circle cx="300" cy="160" r="5" fill="#f7c948"/>
+    <circle cx="365" cy="272" r="5" fill="#62b6ff"/>
+    <circle cx="538" cy="126" r="5" fill="#ff6b6b"/>
+    <circle cx="640" cy="240" r="5" fill="#42d392"/>
+    <circle cx="710" cy="316" r="5" fill="#49d6e8"/>
+  </g>
+  <g fill="none" stroke-width="2" opacity=".45">
+    <path d="M215 108 C285 82,330 125,300 160" stroke="#42d392"/>
+    <path d="M300 160 C340 205,330 245,365 272" stroke="#f7c948"/>
+    <path d="M538 126 C590 144,626 183,640 240" stroke="#ff6b6b"/>
+    <path d="M640 240 C666 270,690 292,710 316" stroke="#49d6e8"/>
+  </g>
+</svg>
