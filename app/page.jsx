@@ -16,6 +16,7 @@ export default function HomePage() {
             <a href="#dashboard" className="active">
               Dashboard
             </a>
+            <a href="#games">Games</a>
             <a href="#stocks">Stocks</a>
             <a href="#trending">Trending</a>
             <a href="#buy-low">Buy Low</a>
@@ -75,6 +76,17 @@ export default function HomePage() {
                 Reset Sim
               </button>
             </div>
+          </section>
+
+          <section id="games" className="tool-surface games-surface">
+            <div className="section-heading">
+              <div>
+                <span className="eyebrow">Today&apos;s slate</span>
+                <h3>Games And Player Stocks</h3>
+              </div>
+            </div>
+            <div id="gameSlate" className="game-slate"></div>
+            <div id="gameDetail" className="game-detail"></div>
           </section>
 
           <section className="dashboard-grid">
@@ -237,7 +249,16 @@ export default function HomePage() {
         </section>
       </div>
 
-      <Script src="/main.js?v=2026-06-29-next-shell" type="module" strategy="afterInteractive" />
+      <div id="playerCardOverlay" className="player-card-overlay" aria-hidden="true">
+        <section className="player-card-modal" role="dialog" aria-modal="true" aria-labelledby="playerCardTitle">
+          <button id="playerCardClose" className="icon-button close-button" type="button" aria-label="Close player card">
+            x
+          </button>
+          <div id="playerCardContent"></div>
+        </section>
+      </div>
+
+      <Script src="/main.js?v=2026-06-29-game-slate" type="module" strategy="afterInteractive" />
     </>
   );
 }

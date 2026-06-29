@@ -15,11 +15,15 @@ test("current replay fixture is generated from real cached provider data", async
   assert.equal(fixture.source.liveProviderCalls, false);
   assert.match(fixture.source.rawCacheDirectory, /^\.cache\/provider-raw\/espn\/nba\//);
   assert.equal(fixture.days.length, 7);
-  assert.ok(fixture.players.length >= 10);
+  assert.ok(fixture.players.length >= 150);
+  assert.ok(fixture.days[0].games.length > 0);
+  assert.ok(fixture.days[0].games[0].eventId);
+  assert.ok(fixture.days[0].games[0].homeTeam);
 
   for (const player of fixture.players) {
     assert.ok(player.espnAthleteId, `${player.name} should keep source athlete id`);
-    assert.ok(player.dailyFantasyPoints.some((value) => value > 0), `${player.name} should have real replay output`);
+    assert.ok(player.dailyFantasyPoints.some((value) => Number.isFinite(value)), `${player.name} should have real replay output`);
+    assert.ok(player.gameLogs.length > 0, `${player.name} should include game logs`);
     assert.ok(player.priorWeeks.length >= 4, `${player.name} should include prior-week context`);
     assert.ok(player.reasonTags.includes("real boxscore"), `${player.name} should disclose real boxscore source`);
   }

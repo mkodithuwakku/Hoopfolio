@@ -93,13 +93,14 @@ export function buildStockRow(player, completedDays, team = {}) {
     currentReturn: stockValue.finalReturnPercent,
     projectedFantasyPoints: player.expectedFantasyPoints,
     actualFantasyPoints,
-    gamesPlayedThisWeek: completedDays,
-    gamesRemainingThisWeek: Math.max(player.dailyFantasyPoints.length - completedDays, 0),
+    gamesPlayedThisWeek: countGamesThroughDay(player.dailyFantasyPoints, completedDays),
+    gamesRemainingThisWeek: countGamesFromDay(player.dailyFantasyPoints, completedDays),
     recentAverageFantasyPoints: player.recentAverageFantasyPoints ?? null,
     priorWeeksIncluded: player.priorWeeksIncluded ?? player.priorWeeks?.length ?? 0,
     historicalVolatility: player.historicalVolatility ?? null,
     projectionBasis: player.projectionBasis ?? "current week projection",
     priorWeeks: player.priorWeeks ?? [],
+    gameLogs: player.gameLogs ?? [],
     ownershipPercent: player.ownershipPercent,
     trendingScore: player.trendingScore,
     buyLowScore: player.buyLowScore,
@@ -147,6 +148,14 @@ function sumFantasyThroughDay(values, completedDays) {
 
 function sumFantasyFromDay(values, completedDays) {
   return roundNumber(values.slice(completedDays).reduce((sum, value) => sum + value, 0), 2);
+}
+
+function countGamesThroughDay(values, completedDays) {
+  return values.slice(0, completedDays).filter((value) => value > 0).length;
+}
+
+function countGamesFromDay(values, completedDays) {
+  return values.slice(completedDays).filter((value) => value > 0).length;
 }
 
 function roundNumber(value, places = 2) {

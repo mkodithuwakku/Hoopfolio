@@ -11,7 +11,7 @@ const season = args.season ?? "2024-25";
 const weekStart = args["week-start"] ?? "2025-01-06";
 const targetDays = Number(args.days ?? 7);
 const priorWeeks = Number(args["prior-weeks"] ?? 4);
-const maxPlayers = Number(args["max-players"] ?? 10);
+const maxPlayers = Number(args["max-players"] ?? 400);
 const force = Boolean(args.force);
 
 const rawRoot = join(process.cwd(), ".cache", "provider-raw", "espn", "nba", season);
@@ -95,7 +95,16 @@ const days = targetDates.map((date) => ({
   marketLocksAt: `${date}T23:30:00.000Z`,
   games: targetEvents
     .filter((event) => event.date === date)
-    .map((event) => event.shortName)
+    .map((event) => ({
+      eventId: event.id,
+      name: event.name,
+      shortName: event.shortName,
+      status: event.status,
+      homeTeam: event.homeTeam,
+      awayTeam: event.awayTeam,
+      homeScore: event.homeScore,
+      awayScore: event.awayScore
+    }))
 }));
 
 const players = selectedPlayers.map((player, index) =>
@@ -156,13 +165,23 @@ console.log(
       rawRoot,
       targetGames: targetEvents.length,
       priorGamesScanned: priorEvents.length,
-      players: players.map((player) => ({
+      playerCount: players.length,
+      samplePlayers: players.slice(0, 25).map((player) => ({
         id: player.id,
         name: player.name,
         team: player.teamAbbreviation,
         targetWeekFantasy: player.dailyFantasyPoints.reduce((sum, value) => sum + value, 0),
         expectedFantasyPoints: player.expectedFantasyPoints
-      }))
+      })),
+      lowestVolumePlayer: players.at(-1)
+        ? {
+            id: players.at(-1).id,
+            name: players.at(-1).name,
+            team: players.at(-1).teamAbbreviation,
+            targetWeekFantasy: players.at(-1).dailyFantasyPoints.reduce((sum, value) => sum + value, 0),
+            expectedFantasyPoints: players.at(-1).expectedFantasyPoints
+          }
+        : null
     },
     null,
     2
@@ -251,16 +270,36 @@ function collectEvents(scoreboardsByDateMap, dates) {
       .filter((event) => event.status?.type?.completed)
       .map((event) => {
         const competition = event.competitions?.[0] ?? {};
-        const teamIds = (competition.competitors ?? []).map((competitor) => competitor.team?.id).filter(Boolean);
+        const competitors = competition.competitors ?? [];
+        const home = competitors.find((competitor) => competitor.homeAway === "home");
+        const away = competitors.find((competitor) => competitor.homeAway === "away");
+        const teamIds = competitors.map((competitor) => competitor.team?.id).filter(Boolean);
         return {
           id: event.id,
           date,
           name: event.name,
           shortName: event.shortName,
+          status: event.status?.type?.shortDetail ?? event.status?.type?.description ?? "Final",
+          homeTeam: normalizeCompetitionTeam(home),
+          awayTeam: normalizeCompetitionTeam(away),
+          homeScore: Number(home?.score ?? 0),
+          awayScore: Number(away?.score ?? 0),
           teamIds
         };
       });
   });
+}
+
+function normalizeCompetitionTeam(competitor) {
+  const team = competitor?.team ?? {};
+  return {
+    id: team.id,
+    name: team.location,
+    displayName: team.displayName,
+    abbreviation: team.abbreviation,
+    color: team.color ? `#${team.color}` : "#49d6e8",
+    logoUrl: team.logo ?? null
+  };
 }
 
 function parseSummaryPlayers(summary, event) {
@@ -286,6 +325,7 @@ function parseSummaryPlayers(summary, event) {
           teamLogoUrl: team.logo ?? null,
           eventId: event.id,
           eventName: event.name,
+          eventShortName: event.shortName,
           date: event.date,
           fantasyPoints: calculateFantasyPoints(stats),
           stats
@@ -406,6 +446,16 @@ function buildFixturePlayer({ player, targetDates: dates, priorStart: firstPrior
     openingPrice: 100,
     expectedFantasyPoints,
     dailyFantasyPoints,
+    gameLogs: player.targetLogs
+      .map((log) => ({
+        eventId: log.eventId,
+        eventName: log.eventName,
+        eventShortName: log.eventShortName,
+        date: log.date,
+        fantasyPoints: log.fantasyPoints,
+        stats: log.stats
+      }))
+      .sort((a, b) => a.date.localeCompare(b.date)),
     projectedRemainingFantasyPoints,
     volatilityMultiplier: clamp(0.78 + historicalVolatility / 80, 0.72, 1.08),
     ownershipPercent: clamp(Math.round(22 + targetAverage / 2 + index * 1.7), 12, 58),

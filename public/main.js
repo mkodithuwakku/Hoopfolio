@@ -1,6 +1,7 @@
 const state = {
   snapshot: null,
   stocks: [],
+  selectedGameId: null,
   filters: {
     boostEligible: false,
     buyLowOnly: false
@@ -15,6 +16,8 @@ const elements = {
   marketReason: document.querySelector("#marketReason"),
   simProgress: document.querySelector("#simProgress"),
   activeGames: document.querySelector("#activeGames"),
+  gameSlate: document.querySelector("#gameSlate"),
+  gameDetail: document.querySelector("#gameDetail"),
   advanceDayButton: document.querySelector("#advanceDayButton"),
   resetSimButton: document.querySelector("#resetSimButton"),
   tutorialButton: document.querySelector("#tutorialButton"),
@@ -26,6 +29,9 @@ const elements = {
   tutorialBody: document.querySelector("#tutorialBody"),
   tutorialBack: document.querySelector("#tutorialBack"),
   tutorialNext: document.querySelector("#tutorialNext"),
+  playerCardOverlay: document.querySelector("#playerCardOverlay"),
+  playerCardClose: document.querySelector("#playerCardClose"),
+  playerCardContent: document.querySelector("#playerCardContent"),
   stockCount: document.querySelector("#stockCount"),
   topEdgeCard: document.querySelector("#topEdgeCard"),
   topBuyLowCard: document.querySelector("#topBuyLowCard"),
@@ -107,7 +113,14 @@ function bindEvents() {
   elements.googleDemoButton?.addEventListener("click", createGoogleDemoSession);
   elements.stockRows.addEventListener("click", handleStockAction);
   elements.marketStories.addEventListener("click", handleStockAction);
+  elements.gameSlate?.addEventListener("click", handleGameSelection);
+  elements.gameDetail?.addEventListener("click", handleGameDetailAction);
   elements.holdingsList.addEventListener("click", handleHoldingAction);
+  elements.playerCardClose?.addEventListener("click", closePlayerCard);
+  elements.playerCardContent?.addEventListener("click", handleStockAction);
+  elements.playerCardOverlay?.addEventListener("click", (event) => {
+    if (event.target === elements.playerCardOverlay) closePlayerCard();
+  });
   elements.tutorialButton.addEventListener("click", () => openTutorial(0));
   elements.tutorialClose.addEventListener("click", closeTutorial);
   elements.tutorialBack.addEventListener("click", () => moveTutorial(-1));
@@ -144,7 +157,7 @@ function applySnapshot(snapshot) {
   elements.marketReason.textContent = snapshot.marketStatus.reason;
   elements.simProgress.textContent = `${snapshot.sim.completedDays}/${snapshot.sim.totalDays} days complete`;
   elements.activeGames.textContent = snapshot.sim.activeDay
-    ? `${snapshot.sim.progressLabel}: ${snapshot.sim.activeDay.games.join(", ")}`
+    ? `${snapshot.sim.progressLabel}: ${snapshot.sim.activeDay.games.map(formatGameLabel).join(", ")}`
     : "All scheduled test games have been applied.";
   elements.advanceDayButton.disabled = snapshot.sim.isSettled;
   elements.stockCount.textContent = `${snapshot.stocks.length} stocks`;
@@ -154,6 +167,7 @@ function applySnapshot(snapshot) {
   elements.topEdgeCard.innerHTML = renderDashboardPlayerCard(topEdge, "Projected edge");
   elements.topBuyLowCard.innerHTML = renderDashboardPlayerCard(topBuyLow, "Buy-low score");
 
+  renderGames(snapshot);
   renderSearch();
   renderMarketStories(snapshot);
   renderSignalList(elements.trendingList, snapshot.trending, "trendingScore");
@@ -208,9 +222,11 @@ function renderRows(stocks) {
         <tr>
           <td>
             <div class="player-cell">
-              ${avatar}
+              <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
+                ${avatar}
+              </button>
               <div>
-                <strong>${stock.playerName}</strong>
+                <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
                 <span class="subtle">${stock.position} · ${stock.injuryStatus}</span>
               </div>
             </div>
@@ -236,10 +252,7 @@ function renderRows(stocks) {
           <td>${stock.gamesPlayedThisWeek} / ${stock.gamesRemainingThisWeek}</td>
           <td>${stock.ownershipPercent}%</td>
           <td>
-            <span class="trend-pill ${trend.className}" title="${trend.title}">
-              <span aria-hidden="true">${trend.arrow}</span>
-              ${Math.abs(stock.trendingScore)}
-            </span>
+            ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
           </td>
           <td>
             <div class="tag-row">
@@ -282,14 +295,16 @@ function renderDashboardPlayerCard(stock, label) {
   const trend = trendDetails(stock);
   return `
     <div class="dashboard-player-main">
-      ${playerImage(stock, "feature")}
+      <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
+        ${playerImage(stock, "feature")}
+      </button>
       <div>
-        <strong>${stock.playerName}</strong>
+        <button class="link-button player-name-link" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
         <span class="subtle">${teamBadge(stock)} · ${label}</span>
       </div>
     </div>
     <div class="dashboard-player-stats">
-      <span class="trend-pill ${trend.className}"><span aria-hidden="true">${trend.arrow}</span>${Math.abs(stock.trendingScore)}</span>
+      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
       <span class="${stock.projectedReturn >= 0 ? "positive" : "negative"}">${formatPercent(stock.projectedReturn)} proj</span>
       <span>${stock.gamesRemainingThisWeek} games left</span>
     </div>
@@ -306,8 +321,8 @@ function renderStoryCard(stock) {
       </div>
       <div class="story-card-body">
         <div class="story-card-title">
-          <strong>${stock.playerName}</strong>
-          <span class="trend-pill ${trend.className}"><span aria-hidden="true">${trend.arrow}</span>${Math.abs(stock.trendingScore)}</span>
+          <button class="link-button player-name-link" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
+          ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: trend.title })}
         </div>
         <div class="story-metrics">
           <span>${formatPercent(stock.currentReturn)} live</span>
@@ -319,6 +334,179 @@ function renderStoryCard(stock) {
         <button type="button" data-buy="${stock.playerId}" data-default-amount="500">Buy 500</button>
       </div>
     </article>
+  `;
+}
+
+function renderGames(snapshot) {
+  if (!elements.gameSlate || !elements.gameDetail) return;
+  const activeDay = snapshot.sim.activeDay;
+  const games = activeDay?.games ?? [];
+  if (!games.length) {
+    elements.gameSlate.innerHTML = `<p class="empty-state">No games remain in this replay week.</p>`;
+    elements.gameDetail.innerHTML = "";
+    return;
+  }
+
+  if (!state.selectedGameId || !games.some((game) => String(game.eventId) === String(state.selectedGameId))) {
+    state.selectedGameId = String(games[0].eventId);
+  }
+
+  elements.gameSlate.innerHTML = games
+    .map((game) => {
+      const active = String(game.eventId) === String(state.selectedGameId);
+      return `
+        <button class="game-card ${active ? "active" : ""}" type="button" data-game-id="${game.eventId}">
+          <span class="game-status">${game.status ?? "Final"}</span>
+          <span class="game-matchup">
+            ${teamMini(game.awayTeam)} <strong>${game.awayScore ?? "-"}</strong>
+            <span class="at-symbol">@</span>
+            ${teamMini(game.homeTeam)} <strong>${game.homeScore ?? "-"}</strong>
+          </span>
+        </button>
+      `;
+    })
+    .join("");
+
+  const selectedGame = games.find((game) => String(game.eventId) === String(state.selectedGameId));
+  const players = snapshot.stocks
+    .map((stock) => ({
+      stock,
+      log: stock.gameLogs.find((log) => String(log.eventId) === String(state.selectedGameId))
+    }))
+    .filter((entry) => entry.log)
+    .sort((a, b) => {
+      if (a.stock.teamAbbreviation !== b.stock.teamAbbreviation) {
+        return a.stock.teamAbbreviation.localeCompare(b.stock.teamAbbreviation);
+      }
+      return b.log.fantasyPoints - a.log.fantasyPoints;
+    });
+
+  const awayRows = players.filter((entry) => entry.stock.teamId === selectedGame.awayTeam?.id);
+  const homeRows = players.filter((entry) => entry.stock.teamId === selectedGame.homeTeam?.id);
+
+  elements.gameDetail.innerHTML = `
+    <div class="game-detail-header">
+      <div>
+        <span class="eyebrow">${activeDay.label} · ${activeDay.date}</span>
+        <h4>${selectedGame.name}</h4>
+      </div>
+      <span class="game-total">${players.length} player stocks</span>
+    </div>
+    <div class="game-team-grid">
+      ${renderGameTeam(selectedGame.awayTeam, selectedGame.awayScore, awayRows)}
+      ${renderGameTeam(selectedGame.homeTeam, selectedGame.homeScore, homeRows)}
+    </div>
+  `;
+}
+
+function renderGameTeam(team, score, rows) {
+  return `
+    <section class="game-team-panel" style="--team-color: ${team?.color ?? "#49d6e8"}">
+      <header>
+        ${teamMini(team)}
+        <strong>${score ?? "-"}</strong>
+      </header>
+      <div class="game-player-list">
+        ${
+          rows.length
+            ? rows.map(({ stock, log }) => renderGamePlayerRow(stock, log)).join("")
+            : `<p class="empty-state">No player logs found for this team.</p>`
+        }
+      </div>
+    </section>
+  `;
+}
+
+function renderGamePlayerRow(stock, log) {
+  const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
+  return `
+    <article class="game-player-row">
+      <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
+        ${playerImage(stock, "small")}
+      </button>
+      <div>
+        <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
+        <span class="subtle">${stock.position} · ${formatMinutes(log.stats.minutes)} min · ${log.fantasyPoints} FP</span>
+      </div>
+      <div class="game-stat-strip">
+        <span>${log.stats.points} PTS</span>
+        <span>${log.stats.rebounds} REB</span>
+        <span>${log.stats.assists} AST</span>
+      </div>
+      <button type="button" data-buy="${stock.playerId}" data-default-amount="250" ${disabled}>Buy</button>
+    </article>
+  `;
+}
+
+function openPlayerCard(playerId) {
+  const stock = state.stocks.find((entry) => entry.playerId === playerId);
+  if (!stock || !elements.playerCardOverlay || !elements.playerCardContent) return;
+  const disabled = state.snapshot.sim.canTrade ? "" : "disabled";
+  const trend = trendDetails(stock);
+  elements.playerCardContent.innerHTML = `
+    <div class="player-card-hero" style="--team-color: ${stock.teamColor ?? "#49d6e8"}">
+      ${playerImage(stock, "feature")}
+      <div>
+        <span class="eyebrow">${teamBadge(stock)} · ${stock.position}</span>
+        <h3 id="playerCardTitle">${stock.playerName}</h3>
+        <p>${stock.projectionBasis}</p>
+      </div>
+    </div>
+    <div class="player-card-metrics">
+      ${metricBox("Price", stock.currentPrice.toFixed(2))}
+      ${metricBox("Projected", `${stock.projectedFantasyPoints} FP`)}
+      ${metricBox("Actual", `${stock.actualFantasyPoints} FP`)}
+      ${metricBox("Games left", stock.gamesRemainingThisWeek)}
+    </div>
+    <div class="player-card-signals">
+      ${scorePill(stock.trendingScore, { min: -100, max: 100, icon: trend.arrow, title: "Trend score" })}
+      ${scorePill(stock.buyLowScore, { min: 0, max: 100, icon: "↓", title: "Buy-low score" })}
+      ${scorePill(100 - stock.volatilityRating, { min: 0, max: 100, icon: "σ", title: "Stability score" })}
+    </div>
+    <p class="player-card-copy">${stock.resultExplanation}</p>
+    <div class="player-game-log">
+      <h4>Replay Game Log</h4>
+      ${stock.gameLogs.map(renderPlayerGameLog).join("")}
+    </div>
+    <div class="trade-control player-card-trade">
+      <input data-amount-for="${stock.playerId}" type="number" min="25" step="25" value="500" aria-label="Coins to buy ${stock.playerName}" ${disabled} />
+      <button type="button" data-buy="${stock.playerId}" ${disabled}>Buy</button>
+    </div>
+  `;
+  elements.playerCardOverlay.setAttribute("aria-hidden", "false");
+  document.body.classList.add("player-card-open");
+}
+
+function closePlayerCard() {
+  elements.playerCardOverlay?.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("player-card-open");
+}
+
+function renderPlayerGameLog(log) {
+  return `
+    <article class="player-log-row">
+      <div>
+        <strong>${log.eventShortName ?? log.eventName}</strong>
+        <span class="subtle">${log.date} · ${formatMinutes(log.stats.minutes)} min</span>
+      </div>
+      <div class="game-stat-strip">
+        <span>${log.stats.points} PTS</span>
+        <span>${log.stats.rebounds} REB</span>
+        <span>${log.stats.assists} AST</span>
+        <span>${log.stats.steals} STL</span>
+        <span>${log.stats.blocks} BLK</span>
+      </div>
+      <strong>${log.fantasyPoints} FP</strong>
+    </article>
+  `;
+}
+
+function metricBox(label, value) {
+  return `
+    <div>
+      <span>${label}</span>
+      <strong>${value}</strong>
+    </div>
   `;
 }
 
@@ -397,16 +585,15 @@ function renderSignalList(target, stocks, scoreKey) {
         <article class="signal-item">
           <header>
             <div class="player-cell compact">
-              ${playerImage(stock, "small")}
+              <button class="player-card-trigger" type="button" data-player-card="${stock.playerId}" aria-label="Open player card for ${stock.playerName}">
+                ${playerImage(stock, "small")}
+              </button>
               <div>
-                <strong>${stock.playerName}</strong>
+                <button class="link-button" type="button" data-player-card="${stock.playerId}">${stock.playerName}</button>
                 <span class="subtle">${teamBadge(stock)}</span>
               </div>
             </div>
-            <span class="trend-pill ${trend.className}">
-              <span aria-hidden="true">${trend.arrow}</span>
-              ${stock[scoreKey]}
-            </span>
+            ${scorePill(stock[scoreKey], { min: scoreKey === "trendingScore" ? -100 : 0, max: 100, icon: trend.arrow })}
           </header>
           <p>${stock.resultExplanation}</p>
           <div class="tag-row">
@@ -420,6 +607,11 @@ function renderSignalList(target, stocks, scoreKey) {
 }
 
 async function handleStockAction(event) {
+  const cardPlayerId = event.target.closest("[data-player-card]")?.dataset.playerCard;
+  if (cardPlayerId) {
+    openPlayerCard(cardPlayerId);
+    return;
+  }
   const playerId = event.target.dataset.buy;
   if (!playerId) return;
   const amountInput = document.querySelector(`[data-amount-for="${playerId}"]`);
@@ -428,6 +620,22 @@ async function handleStockAction(event) {
     playerId,
     amountCoins: amountInput ? Number(amountInput.value) : defaultAmount
   });
+}
+
+async function handleGameDetailAction(event) {
+  const cardPlayerId = event.target.closest("[data-player-card]")?.dataset.playerCard;
+  if (cardPlayerId) {
+    openPlayerCard(cardPlayerId);
+    return;
+  }
+  await handleStockAction(event);
+}
+
+function handleGameSelection(event) {
+  const gameId = event.target.closest("[data-game-id]")?.dataset.gameId;
+  if (!gameId) return;
+  state.selectedGameId = gameId;
+  renderGames(state.snapshot);
 }
 
 async function handleHoldingAction(event) {
@@ -521,17 +729,17 @@ function clearTutorialHighlight() {
 function indicatorChips(stock) {
   const trend = trendDetails(stock);
   const chips = [
-    chip(trend.label, trend.chipClassName, trend.arrow),
+    scoreChip(trend.label, stock.trendingScore, -100, 100, trend.arrow),
     stock.buyLowScore >= 75
-      ? chip("Buy low", "chip-buy-low", "↓")
+      ? scoreChip("Buy low", stock.buyLowScore, 0, 100, "↓")
       : stock.buyLowScore >= 60
-        ? chip("Watch", "chip-watch", "!")
+        ? scoreChip("Watch", stock.buyLowScore, 0, 100, "!")
         : null,
     stock.loyaltyBoost.eligible ? chip("Boost", "chip-boost", "%") : null,
     stock.volatilityRating >= 65
-      ? chip("High vol", "chip-risk", "!")
+      ? scoreChip("High vol", 100 - stock.volatilityRating, 0, 100, "!")
       : stock.volatilityRating <= 35
-        ? chip("Stable", "chip-stable", "→")
+        ? scoreChip("Stable", 100 - stock.volatilityRating, 0, 100, "→")
         : null,
     stock.gamesRemainingThisWeek >= 3 ? chip(`${stock.gamesRemainingThisWeek} games`, "chip-schedule", "+") : null,
     stock.recentAverageFantasyPoints
@@ -545,6 +753,28 @@ function indicatorChips(stock) {
 
 function chip(label, className, icon) {
   return `<span class="tag indicator-chip ${className}">${icon ? `<span aria-hidden="true">${icon}</span>` : ""}${label}</span>`;
+}
+
+function scoreChip(label, value, min, max, icon) {
+  const color = scoreColor(value, min, max);
+  return `<span class="tag indicator-chip spectrum-chip" style="--score-color: ${color}">${icon ? `<span aria-hidden="true">${icon}</span>` : ""}${label}</span>`;
+}
+
+function scorePill(value, { min = 0, max = 100, icon = "", title = "" } = {}) {
+  const color = scoreColor(value, min, max);
+  return `
+    <span class="trend-pill spectrum-pill" style="--score-color: ${color}" title="${title}">
+      ${icon ? `<span aria-hidden="true">${icon}</span>` : ""}
+      ${Math.abs(Math.round(value))}
+    </span>
+  `;
+}
+
+function scoreColor(value, min = 0, max = 100) {
+  const normalized = clamp((value - min) / (max - min), 0, 1);
+  const hue = Math.round(normalized * 125);
+  const lightness = Math.round(50 + normalized * 8);
+  return `hsl(${hue} 82% ${lightness}%)`;
 }
 
 function trendDetails(stock) {
@@ -589,6 +819,22 @@ function teamBadge(stock) {
   `;
 }
 
+function teamMini(team = {}) {
+  const fallback = teamFallbackDataUri({
+    teamColor: team.color,
+    teamAbbreviation: team.abbreviation
+  });
+  const logo = team.logoUrl
+    ? `<img class="team-logo" src="${team.logoUrl}" data-fallback="${fallback}" alt="${team.abbreviation} logo" />`
+    : `<img class="team-logo" src="${fallback}" alt="${team.abbreviation} logo" />`;
+  return `
+    <span class="team-badge" style="--team-color: ${team.color ?? "#49d6e8"}">
+      <span class="team-mark">${logo}</span>
+      <span>${team.abbreviation ?? "TBD"}</span>
+    </span>
+  `;
+}
+
 function playerImage(stock, size) {
   const fallback = avatarDataUri(stock);
   const src = stock.headshotUrl ?? fallback;
@@ -606,6 +852,18 @@ function uniqueByPlayer(stocks) {
     seen.add(stock.playerId);
     return true;
   });
+}
+
+function formatGameLabel(game) {
+  return typeof game === "string" ? game : (game.shortName ?? game.name ?? "Game");
+}
+
+function formatMinutes(value) {
+  return Number.isFinite(value) ? `${Math.round(value)}` : "-";
+}
+
+function clamp(value, min, max) {
+  return Math.min(Math.max(value, min), max);
 }
 
 function teamFallbackDataUri(stock) {

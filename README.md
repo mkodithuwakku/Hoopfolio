@@ -8,6 +8,8 @@ This implementation is intentionally cache-first. It uses a real ESPN NBA scoreb
 
 - Next.js app shell with backend route handlers under `/api/*`.
 - Clickable test market simulator using a real 2024-25 midseason ESPN NBA replay cached locally.
+- Full replay-day game slate with clickable games, team panels, player boxscore rows, and buy buttons for role players.
+- Player cards with price, projection, actual fantasy output, prior-week context, game logs, and trade controls.
 - Local cached teams, players, games, projections, and weekly market state.
 - Disk-backed users, sessions, portfolio state, trades, week advancement, leaderboard, and reset flow.
 - Pricing engine based on fantasy performance versus expectations.
@@ -35,6 +37,8 @@ npx next dev -H 127.0.0.1 -p 4174
 The test app lets you:
 
 - Buy player stocks with local test coins.
+- Browse the current replay day's games and buy any player who logged minutes, including lower-volume role players.
+- Open player cards from the game view, market table, or featured cards.
 - Sell current holdings.
 - Advance the simulated week one market day at a time.
 - Reset the week and replay the same fixture.
@@ -53,7 +57,7 @@ The checked-in replay fixture was generated from ESPN NBA scoreboard and boxscor
 npm run ingest:espn-replay
 ```
 
-By default this records the week of `2025-01-06` from the `2024-25` season and four prior weeks of context. Raw provider responses are saved to `.cache/provider-raw/espn/nba/2024-25/`; rerunning the command reuses those files instead of calling the provider again unless you pass `--force`.
+By default this records the week of `2025-01-06` from the `2024-25` season, four prior weeks of context, and up to 400 player stocks from real boxscores. Raw provider responses are saved to `.cache/provider-raw/espn/nba/2024-25/`; rerunning the command reuses those files instead of calling the provider again unless you pass `--force`.
 
 Example override:
 
